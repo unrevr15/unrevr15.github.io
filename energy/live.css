@@ -1,0 +1,759 @@
+/* Live layer (live.js) and the 밸류체인 기업 desk (value-chain.js). Uses the
+   variables and table classes of style.css. */
+.live-strip{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:0 0 10px}
+.live-chip{display:grid;gap:1px;min-width:122px;padding:6px 9px;border:1px solid var(--line);border-radius:4px;background:var(--paper);text-decoration:none;color:var(--ink)}
+.live-chip:hover{border-color:var(--edge)}
+.live-chip span{font-size:11px;color:var(--muted);white-space:nowrap}
+.live-chip b{font:700 15px var(--numeric)}.live-chip b i{font:400 10px/1 AtlasKR,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;color:var(--muted);font-style:normal}
+.live-chip small{font-size:10px;color:var(--muted);white-space:nowrap}
+.live-chip em{font-style:normal;font-weight:650}
+.live-strip-note{align-self:center;font-size:10px;color:var(--muted);margin-left:2px}
+.live-up{color:#dc2223}.live-down{color:#0466b1}
+.live-panel{margin:0 0 12px}
+.live-table .live-group th{background:var(--surface);color:var(--muted);font-size:11px;font-weight:700;text-align:left;padding:5px}
+.live-table td.live-up,.live-table td.live-down{font-weight:650}
+.live-badge{display:inline-block;padding:0 5px;border:1px solid #93b6ca;border-radius:3px;background:#e7f1f7;color:#153f59;font-size:10px;font-weight:650;line-height:16px;vertical-align:1px}
+.dashboard-link{font-weight:650}
+
+.vc-chain{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px;margin-top:12px}
+.vc-chain a{display:grid;gap:2px;padding:8px 10px;border:1px solid var(--line);border-radius:4px;background:var(--paper);text-decoration:none}
+.vc-chain a:hover{border-color:var(--edge)}
+.vc-chain b{font-size:13px}.vc-chain span{font-size:11px;color:var(--muted);line-height:1.4}.vc-chain small{font-size:10px;color:var(--blue)}
+.vc-overview-table td:nth-child(2),.vc-overview-table td:nth-child(6),.vc-overview-table td:nth-child(7){font-family:inherit;font-size:11px}
+.vc-position{margin:-2px 0 8px}
+.vc-summary{margin-bottom:12px}.vc-summary ul,.vc-guidance ul{margin:6px 0 0;padding-left:18px}.vc-summary li,.vc-guidance li{margin:3px 0}
+.vc-grid{align-items:start}
+.vc-card .panel-head h3 small{font-size:11px;font-weight:500;color:var(--muted);letter-spacing:0}
+.vc-role{font-size:12px;color:var(--muted);margin-bottom:6px}
+.vc-tag{display:inline-block;margin-left:4px;padding:0 6px;border-radius:3px;background:var(--surface);border:1px solid var(--line);font-size:10px;color:var(--ink);white-space:nowrap}
+.vc-wait{background:#fff6e5;border-color:#e8cf9a}
+.vc-quote{font-size:12px;margin:2px 0 6px}.vc-quote b{font:700 14px var(--numeric)}.vc-quote em{font-style:normal;font-weight:650}
+.vc-filing{font-size:11px;padding:6px 8px;margin:0 0 8px;border-radius:3px;background:var(--surface);border:1px solid var(--line)}
+.vc-filing.vc-newer{background:#fff6e5;border-color:#e8cf9a}
+.vc-points{margin:4px 0 8px;padding-left:18px;font-size:12.5px}.vc-points li{margin:4px 0}
+.vc-metrics td{font-size:11.5px}.vc-metrics td:nth-child(3),.vc-metrics td:nth-child(4){font-family:inherit;white-space:normal}
+.vc-guidance{font-size:12px;margin:8px 0}
+.vc-read{font-size:12px;margin:8px 0 4px;padding-top:6px;border-top:1px dashed var(--line)}
+.vc-noref{color:var(--muted)}
+.vc-sources{margin:6px 0 0;padding-left:22px;font-size:11px}.vc-sources li{margin:2px 0}
+@media (max-width:720px){.live-chip{min-width:calc(50% - 3px)}.vc-grid{grid-template-columns:1fr}.vc-tag{white-space:normal}.live-table,.vc-overview-table{min-width:640px}.live-table th[scope=row],.vc-overview-table th[scope=row]{min-width:120px}}
+
+/* 분기 비교 (peer-quarters.js): the stage strip (the chain in order, a filter),
+   then a panel a stage: charts on the left (one axis in one unit, a bar a
+   company, a period or a part; a range is a band), tiles on the right (the
+   figures no chart takes, under their company), the folded table of what the
+   calls explained under them. A bar and a tile are <details>: the summary is
+   the mark, opened it shows the definition. The kind of a figure is a shape wherever it shows: 실적 filled,
+   회사 정의 지표 lighter, 가이던스 hatched, 경영진 추정 an outline. The colours
+   are those of the records (--rc-t2, --rc-t4). At 900px and below the tiles go
+   under the charts; at 760px a table row stacks. */
+:root{--pq-bar:var(--rc-t4);--pq-soft:var(--rc-t2)}
+.pq-flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px 17px;margin:10px 0 8px}
+.pq-flow button{position:relative;display:grid;flex:1 1 96px;align-content:space-between;gap:3px;min-width:0;padding:6px 8px 6px;border-color:var(--line);border-radius:4px;background:var(--paper);text-align:left}
+.pq-flow button[data-key=all]{flex:0 0 auto}
+.pq-flow button span{color:var(--muted);font-size:11px;font-weight:650;line-height:1.3}
+.pq-flow button[aria-pressed=true] span{color:var(--blue-strong)}
+.pq-flow button em{color:var(--muted);font-size:10px;font-style:normal;font-weight:500;white-space:nowrap}
+.pq-flow button em b{color:var(--ink);font:700 12px var(--numeric)}
+.pq-flow button:not([data-key=all]):not(:last-child)::after{content:"";position:absolute;top:50%;right:-12px;width:6px;height:6px;border:solid var(--muted);border-width:1.5px 1.5px 0 0;transform:translateY(-50%) rotate(45deg)}
+.rc-controls.pq-legend{margin:0 0 8px}
+.pq-key{display:flex;flex-wrap:wrap;gap:3px 13px;color:var(--muted);font-size:11px}
+.pq-key span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.pq-sw{display:inline-block;width:18px;height:8px;border-radius:0 2px 2px 0}
+.pq-sw,.pq-track i{background:var(--pq-bar)}
+.pq-sw[data-kind=defined],.pq-bar[data-kind=defined] .pq-track i{background:var(--pq-soft)}
+.pq-sw[data-kind=guidance],.pq-bar[data-kind=guidance] .pq-track i{background:repeating-linear-gradient(135deg,var(--pq-bar) 0 2px,var(--paper) 2px 5px);box-shadow:inset 0 0 0 1px var(--pq-bar)}
+.pq-sw[data-kind=estimate],.pq-bar[data-kind=estimate] .pq-track i{background:var(--paper);box-shadow:inset 0 0 0 1.5px var(--pq-bar)}
+.pq-panels{display:grid;gap:10px}
+.pq-stage{padding:11px 14px 10px}
+.pq-stage .panel-head{align-items:center;margin-bottom:9px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.pq-stage .panel-head h3{display:flex;align-items:center;gap:7px;font-size:14px}
+.pq-step{display:inline-grid;flex:none;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--blue-strong);color:var(--paper);font:700 10.5px var(--numeric);letter-spacing:0}
+.pq-body{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:14px 22px;align-items:start}
+.pq-body.pq-solo{grid-template-columns:minmax(0,1fr)}
+.pq-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px 18px;align-items:start}
+.pq-solo .pq-charts{grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr))}
+.pq-chart{min-width:0}
+.pq-chart-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding-bottom:3px;border-bottom:1px solid var(--edge)}
+.pq-chart-head h4,.pq-co h4{margin:0;font-size:12px;font-weight:700;line-height:1.35;letter-spacing:-.02em}
+.pq-unit{color:var(--muted);font:10.5px var(--numeric);white-space:nowrap}
+.pq-of{margin-top:3px;color:var(--muted);font-size:11px}
+.pq-basis{margin-top:3px;padding-left:6px;border-left:2px solid var(--pq-bar);color:var(--ink);font-size:10.5px;line-height:1.45}
+.pq-bar+.pq-bar{border-top:1px solid var(--line)}
+.pq-bar summary,.pq-tile summary{list-style:none;cursor:pointer}
+.pq-bar summary::-webkit-details-marker,.pq-tile summary::-webkit-details-marker{display:none}
+.pq-bar summary{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name val" "track track" "meta meta";align-items:baseline;gap:1px 8px;padding:5px 2px}
+.pq-bar summary:hover,.pq-tile summary:hover{background:var(--selected)}
+.pq-name{grid-area:name;min-width:0;font-size:12px;line-height:1.35}
+.pq-name::before{content:"";display:inline-block;width:4px;height:4px;margin:0 6px 2px 1px;border:solid var(--muted);border-width:0 1.5px 1.5px 0;transform:rotate(-45deg);transition:transform .12s}
+details[open]>summary .pq-name::before{transform:rotate(45deg)}
+.pq-name b{font-weight:680}.pq-name b+span{margin-left:6px}
+.pq-bar .pq-name span{color:var(--muted);font-size:11px}
+.pq-val{font-family:var(--numeric);font-weight:700}
+.pq-val small{display:inline-block;width:100%;color:var(--muted);font:500 10.5px/1.3 AtlasKR,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif}
+.pq-bar .pq-val{grid-area:val;max-width:150px;font-size:12.5px;text-align:right}
+.pq-bar[data-kind=guidance] .pq-val,.pq-tile[data-kind=guidance] .pq-val{text-decoration:underline dashed var(--muted) 1px;text-underline-offset:3px}
+.pq-track{grid-area:track;position:relative;height:9px;margin:3px 0 2px;background:var(--surface)}
+.pq-track i{position:absolute;top:0;bottom:0;border-radius:0 3px 3px 0}
+.pq-range .pq-track i{min-width:3px;border-radius:2px}
+.pq-track u{position:absolute;top:-2px;bottom:-2px;width:1px;background:var(--muted)}
+.pq-meta{grid-area:meta;color:var(--muted);font-size:10.5px;line-height:1.45}
+.pq-tag{display:inline-block;margin-left:5px;padding:0 4px;border:1px solid var(--edge);border-radius:2px;background:var(--paper);color:var(--ink);font-size:10px;font-style:normal;line-height:1.5;white-space:nowrap}
+.pq-cmp{display:block}
+.pq-meta:empty{display:none}
+.pq-chart-head h4 .pq-tag{margin-left:7px;font-weight:500;letter-spacing:0;vertical-align:1px}
+.pq-more{margin:0 0 6px;padding:6px 9px 7px;border-left:3px solid var(--edge);background:var(--surface);color:var(--ink);font-size:11.5px;line-height:1.5}
+.pq-ref{display:flex;flex-wrap:wrap;gap:2px 10px;margin-top:3px;color:var(--muted);font-size:10.5px}
+.pq-ref a,.pq-table .rc-detail a{color:var(--blue);text-underline-offset:2px}
+/* The tiles of a company: the measure, the figure as written, the period. */
+.pq-cos{display:grid;gap:10px;align-content:start}
+.pq-solo .pq-cos{grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:12px 22px}
+.pq-co{min-width:0}
+.pq-co h4{padding-bottom:3px;border-bottom:1px solid var(--edge)}
+.pq-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:6px;margin-top:6px}
+.pq-tile{min-width:0;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+.pq-tile[data-kind=guidance]{border-style:dashed;border-color:var(--pq-bar);background:var(--paper)}
+.pq-tile[data-kind=estimate]{border-color:var(--pq-bar);background:var(--paper)}
+.pq-tile[open]{grid-column:1/-1}
+.pq-tile summary{display:grid;gap:1px;padding:5px 8px 6px}
+.pq-tile .pq-name,.pq-tile .pq-meta{grid-area:auto}
+.pq-tile .pq-name{color:var(--muted);font-size:11px;line-height:1.3}
+.pq-tile .pq-val{font-size:14px;line-height:1.35}
+.pq-tile .pq-val.pq-words{font-family:inherit;font-size:12px;font-weight:650;line-height:1.4}
+.pq-tile .pq-more{margin:0;border-left:0;border-top:1px solid var(--line)}
+/* What the calls explained: folded; a row is one line until it is opened. */
+.pq-notes{margin-top:10px;padding-top:7px;border-top:1px solid var(--line)}
+.pq-notes summary b{font-family:var(--numeric)}
+.pq-notes>div{margin-top:6px;color:var(--ink)}
+.rc-table.pq-table thead th:first-child{width:18%}.pq-table thead th:nth-child(2){width:88px}.pq-table thead th:nth-child(3){width:27%}
+.rc-table.pq-table tbody th{color:var(--ink);font:inherit;font-weight:650}
+.pq-sources{margin-top:12px}
+.pq-srcs{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:0 24px}
+@media(max-width:900px){.pq-body{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){
+  .pq-flow{gap:6px 15px;padding-right:8px}
+  .pq-flow button{flex-basis:92px;padding:5px 7px}
+  .pq-flow button:not([data-key=all]):not(:last-child)::after{right:-11px}
+  .pq-stage{padding:10px}
+  /* The topic takes the first line, the company and the day the second, the wording the third. */
+  .pq-table .rc-row,.pq-table .rc-row[data-open]{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"c c" "a b" "d d"}
+  .rc-table.pq-table .rc-row th,.pq-table .rc-row td:nth-of-type(1){color:var(--muted);font-size:11px;font-weight:500}
+}
+
+/* 정유시설 명부 (refinery-roster.js): the region counts (colour key and filter),
+   the map beside the capacity bars, then the table, whose rows are one line
+   until opened. A region is one colour wherever it shows (--rr-<key>, west to
+   east; neighbours on the map are told apart with a colour-vision deficiency
+   too). A row in barrels a day is a filled mark or bar; a row in Mt/년 or
+   without a figure is an outline. The card, the table rows and the map frame
+   are those of the records below (.rc-card, .rc-row, .rc-map-in); a rule that
+   changes one of them here names both classes, so it holds wherever it stands.
+   At 1000px and below the bars go under the map; at 760px a table row stacks. */
+:root{--rr-am:#1f6fb5;--rr-eu:#c2571a;--rr-me:#12876f;--rr-in:#8a5cc2;--rr-ea:#9a7714;--rr-sp:#c23b6e;--rr-etc:#687482}
+[data-g=am]{--g:var(--rr-am)}[data-g=eu]{--g:var(--rr-eu)}[data-g=me]{--g:var(--rr-me)}[data-g=in]{--g:var(--rr-in)}[data-g=ea]{--g:var(--rr-ea)}[data-g=sp]{--g:var(--rr-sp)}[data-g=etc]{--g:var(--rr-etc)}
+.rr-sw{display:inline-block;flex:none;width:9px;height:9px;border-radius:50%;background:var(--g,var(--rr-etc))}
+.rr-near{margin-top:2px}.rr-near a{color:var(--blue)}
+.rc-controls.rr-summary{margin:9px 0 6px}
+.rr-summary .pills button{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;font-size:12px}
+.rr-summary .pills .rr-sw{order:-1}
+.rr-figures{position:relative;display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:10px;align-items:start;margin:4px 0 10px}
+.rr-fig-map[hidden]+.rr-fig-rank{grid-column:1/-1}
+/* A mark of the map: a disc for a facility in barrels a day (refinery-roster.js sets its size), a ring for any other.
+   ::after is the room around a mark that still presses it (--hit, set with the size, so a small mark is 24px to the
+   pointer); it never changes, so the pointer does not fall off a mark it is on. ::before is the outline of a mark
+   under the pointer or picked. Facilities that would sit on each other are one mark, as large as the largest of
+   them, with their count in a badge (.rr-many). */
+.rr-pin{position:absolute;z-index:1;padding:0;border:0;border-radius:50%;background:var(--g);box-shadow:0 0 0 1.5px var(--paper);transform:translate(-50%,-50%)}
+.rr-pin::after{content:"";position:absolute;inset:calc(-1*var(--hit,6px));border-radius:50%}
+.rr-pin::before{content:"";position:absolute;inset:-3px;border-radius:50%}
+.rr-ring{background:var(--paper);box-shadow:inset 0 0 0 2.5px var(--g),0 0 0 1px var(--paper)}
+.rr-many span,.rr-legend-many b{position:absolute;top:-6px;right:-8px;min-width:13px;height:13px;padding:0 2px;border-radius:7px;background:var(--paper);box-shadow:0 0 0 1.5px var(--g,#8191a3);color:var(--ink);font:700 9px/13px var(--numeric);text-align:center}
+.rr-many{z-index:2}
+.rr-pin:hover,.rr-pin[aria-pressed=true]{z-index:3}
+.rr-pin:hover::before{box-shadow:0 0 0 2px var(--edge)}
+.rr-pin[aria-pressed=true]::before{box-shadow:0 0 0 2px var(--ink)}
+.rr-back{position:absolute;z-index:4;top:6px;left:6px;padding:3px 8px;border:1px solid var(--edge);border-radius:3px;background:var(--paper);color:var(--blue-strong);font-size:11px;font-weight:650}
+.rr-legend{display:flex;align-items:center;flex-wrap:wrap;gap:4px 14px;margin-top:6px;color:var(--muted);font-size:10.5px}
+.rr-legend span{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.rr-legend-head{color:var(--ink);font-weight:650}
+.rr-legend-disc{border-radius:50%;background:#8191a3}
+.rr-legend-ring{width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 2.5px #8191a3}
+.rr-legend-many{position:relative;width:14px;height:14px;margin-right:8px;border-radius:50%;background:#8191a3}
+.rr-legend-many.rr-legend-ring{background:none}
+.rc-card.rr-card{width:min(280px,100%)}
+.rr-card-cap{margin-top:5px;font:500 12px var(--numeric)}.rr-card-cap b{font-size:15px;font-weight:700}
+.rr-card-basis{color:var(--muted);font-size:11px}
+.rr-card-list{display:grid;max-height:250px;overflow-y:auto;margin-top:2px}
+.rr-card-list button{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 8px;padding:5px 2px;border:0;border-top:1px solid var(--line);background:none;font-size:12px;text-align:left}
+.rr-card-list button:hover{background:var(--surface)}
+.rr-card-list em{min-width:0;font-style:normal}
+.rr-card-list span{font-family:var(--numeric);white-space:nowrap}.rr-card-list span b{font-weight:700}
+.rr-card-list small{grid-column:1/-1;color:var(--muted)}
+.rr-card-also{margin-top:5px;padding-top:5px;border-top:1px solid var(--edge);color:var(--muted);font-size:10.5px;font-weight:650}
+.rr-card-also+button{border-top:0}
+.rr-card-cap+.rr-card-list,.rr-card-basis+.rr-card-list{margin-top:6px}
+/* The bars, unit by unit under a head each: name, bar and the capacity as written, on one line; the columns are those
+   of the whole set of a unit, so every bar starts at the same place and has the same room. At 760px and below the bar
+   goes under the other two. */
+.rr-bars{display:grid;grid-template-columns:fit-content(40%) minmax(50px,1fr) auto;column-gap:8px}
+.rr-bar{display:grid;grid-column:1/-1;grid-template-columns:minmax(0,40%) minmax(50px,1fr) 128px;grid-template-columns:subgrid;grid-template-areas:"name track val";align-items:center;gap:0 8px;padding:4px 2px;border:0;border-top:1px solid var(--line);border-radius:0;background:none;font-size:12px;text-align:left}
+.rr-bars .rr-bar:first-child{border-top:0}
+.rr-bar:hover{background:var(--surface)}
+.rr-bar-name{grid-area:name;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rr-bar-name b{font-weight:680}.rr-bar-name span{margin-left:6px;color:var(--muted);font-size:11px}
+.rr-bar-val{grid-area:val;color:var(--muted);font:11px var(--numeric);text-align:right;white-space:nowrap}.rr-bar-val b{color:var(--ink);font-size:12px;font-weight:700}
+.rr-bar-track{grid-area:track;height:9px;background:var(--surface)}
+.rr-bar-track i{display:block;height:100%;min-width:2px;border-radius:0 3px 3px 0;background:var(--g)}
+.rr-bar-ring .rr-bar-track i{background:color-mix(in srgb,var(--g) 28%,var(--paper));box-shadow:inset 0 0 0 1.5px var(--g)}
+.rr-bar:hover .rr-bar-track i{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.rr-bars-head{margin:9px 0 1px;padding-top:7px;border-top:1px solid var(--edge);font-size:12px;font-weight:650}
+.rr-bars-head:first-child{margin-top:0;padding-top:0;border-top:0}
+.rr-bars-head b{font-family:var(--numeric)}.rr-bars-head span{margin-left:7px;color:var(--muted);font-size:11px;font-weight:500}
+.rr-bars-head i{display:inline-block;width:8px;height:8px;margin-right:5px;border-radius:1px}
+.rr-fig-rank .note{margin-top:5px}
+/* How many rows are written in each unit: the darker pieces are the barrel family, the outline is Mt/년, the pale one has no figure. */
+.rr-units{margin-top:10px;padding-top:8px;border-top:1px solid var(--edge)}
+.rr-units-bar{display:flex;gap:2px;height:8px}
+.rr-units-bar i{min-width:3px;border-radius:1px}
+[data-u="b/cd"]{--u:#123f6e}[data-u="b/sd"]{--u:#256aa8}[data-u="b/d"]{--u:#4a8bcb}[data-u="천 b/d"]{--u:#7fb0e0}[data-u="none"]{--u:#d5dce4}
+.rr-units i,.rr-bars-head i{background:var(--u,var(--paper))}
+.rr-units i[data-u="Mt/년"],.rr-bars-head i[data-u="Mt/년"]{background:var(--paper);box-shadow:inset 0 0 0 1.5px #4a8bcb}
+.rr-units-key{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:5px;color:var(--muted);font-size:10.5px}
+.rr-units-key span{display:inline-flex;align-items:center;gap:4px;white-space:nowrap}
+.rr-units-key i{width:8px;height:8px;border-radius:1px}.rr-units-key b{color:var(--ink);font-family:var(--numeric)}
+/* The table: the headings sort; the first column is the country with the colour of its region. */
+.rc-table.rr-table thead th:first-child{width:22%}
+.rr-table thead th:nth-child(2){width:24%}.rr-table thead th:nth-child(3){width:19%}.rr-table thead th:nth-child(5){width:96px}
+.rc-table.rr-table tbody th{color:var(--ink);font:inherit;font-weight:650}
+.rr-table tbody th .rr-sw{margin-right:7px}
+.rr-table td:nth-of-type(3),.rr-table thead th:nth-child(4){text-align:right}
+.rr-sort{padding:0;border:0;background:none;color:inherit;font:inherit}
+.rr-sort::after{content:"↕";margin-left:4px;color:var(--edge);font-size:10px}
+th[aria-sort=ascending] .rr-sort::after{content:"↑";color:var(--blue-strong)}th[aria-sort=descending] .rr-sort::after{content:"↓";color:var(--blue-strong)}
+.rr-cap{color:var(--muted);font-family:var(--numeric)}.rr-cap b{color:var(--ink);font-weight:700}
+.rr-twins{display:flex;flex-wrap:wrap;align-items:baseline;gap:3px 8px;margin-top:3px;color:var(--muted);font-size:11px}
+.rr-twin{padding:1px 6px;border:1px solid var(--edge);border-radius:3px;background:var(--paper);color:var(--blue-strong);font-size:11px}
+.rr-twin small{display:inline;margin:0 0 0 4px;color:var(--muted)}
+.rr-table .rc-detail a{color:var(--blue)}
+.rr-rest{display:block;width:100%;margin-top:6px;padding:6px;border:1px solid var(--edge);border-radius:3px;background:var(--surface);color:var(--blue-strong);font-size:12px;font-weight:650}
+.rr-sources{margin-top:10px}
+.rr-src{margin-top:8px;color:var(--ink);font-size:12px;line-height:1.5}
+.rr-src>b{display:block}.rr-src ul{margin:2px 0 0;padding-left:16px}.rr-src li b{font-family:var(--numeric)}
+@media(max-width:1000px){.rr-figures{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:760px){
+  /* The facility and its capacity on the first line, the country, the operator and the date under them. */
+  #refinery-roster-data .rc-row,#refinery-roster-data .rc-row[data-open]{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"b b d" "a c e"}
+  #refinery-roster-data .rc-row td:nth-of-type(2),#refinery-roster-data .rc-row td:nth-of-type(4),#refinery-roster-data .rc-row th{color:var(--muted);font-size:11px;font-weight:500}
+  #refinery-roster-data .rc-row th .rc-sub{display:none}
+  .rr-summary .pills button{padding:5px 8px}
+  .rr-bars{grid-template-columns:minmax(0,1fr)}
+  .rr-bar{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name val" "track track";align-items:baseline;gap:2px 7px;padding:4px 2px 6px}
+  .rr-bar-track{height:7px}
+}
+
+/* 차질·계약 기록 (records.js): pictures first (status counts, map, timeline,
+   stage flow, Gantt), then the two record tables, whose rows are one line
+   until opened. A status is a colour and a shape (.rc-mk) wherever it shows; a
+   project step is a colour (.rc-sw) beside its name. The colours are the
+   variables below; everything else comes from the variables of style.css. At
+   760px and below (the phone header of style.css) a table row stacks into a
+   small grid and a Gantt row puts its name over its bar, so the page never
+   scrolls sideways. */
+:root{--rc-open:#bf4d1d;--rc-plan:#6853ad;--rc-resolved:#12876f;--rc-closed:var(--ink);--rc-unknown:#687482;
+  --rc-t1:#b7d3f0;--rc-t2:#7fb0e0;--rc-t3:#4a8bcb;--rc-t4:#256aa8;--rc-t5:#123f6e;--rc-fix:var(--rc-open);--rc-none:var(--rc-unknown);
+  --rc-unknown-fill:#c3cbd4;--rc-sea:#d9e6ef;--rc-land:#fcfdfe;--rc-coast:#b4c2cf}
+.rc-controls{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 10px;margin:0 0 6px}
+.rc-controls .pills b,.rc-fig .pills b{font-family:var(--numeric)}
+.rc-controls .pills button:disabled,.rc-flow button:disabled,.rc-key button:disabled{cursor:default;opacity:.45}
+.rc-summary{margin-top:8px}
+.rc-summary .pills button,.rc-key button{display:inline-flex;align-items:center;gap:5px}
+.rc-summary .pills .rc-mk,.rc-key .rc-sw{order:-1}
+
+/* Status mark: 진행 중 a disc, 계획·전망 a diamond, 해소 a square, 폐쇄 a triangle, 상태 미상 a ring. */
+.rc-mk{--mk:var(--rc-unknown);position:relative;display:inline-block;flex:none;width:10px;height:10px;vertical-align:-1px}
+.rc-mk::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--mk)}
+.rc-mk[data-st=open]{--mk:var(--rc-open)}
+.rc-mk[data-st=plan]{--mk:var(--rc-plan)}.rc-mk[data-st=plan]::before{border-radius:1px;transform:rotate(45deg) scale(.8)}
+.rc-mk[data-st=resolved]{--mk:var(--rc-resolved)}.rc-mk[data-st=resolved]::before{border-radius:2px;transform:scale(.92)}
+.rc-mk[data-st=closed]{--mk:var(--rc-closed)}.rc-mk[data-st=closed]::before{border-radius:0;clip-path:polygon(0 6%,100% 6%,50% 100%)}
+.rc-mk[data-st=unknown]::before{background:var(--paper);box-shadow:inset 0 0 0 2px var(--mk)}
+.rc-state{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:650;white-space:nowrap}
+
+/* The pictures of the ledger: map and timeline side by side when there is room. */
+.rc-figures{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:10px;align-items:start;margin:4px 0 0}
+.rc-fig .panel-head{align-items:center;flex-wrap:wrap}
+.rc-fig .panel-head h3{font-size:13px}
+.rc-fig>.note{margin-top:5px}
+button.rc-mk{position:absolute;z-index:1;padding:0;border:0;background:none}
+button.rc-mk::after{content:"";position:absolute;inset:-3px;border-radius:50%}
+button.rc-mk:hover,button.rc-mk.rc-hot,button.rc-mk[aria-pressed=true]{z-index:3}
+button.rc-mk:hover::after,button.rc-mk.rc-hot::after{box-shadow:0 0 0 2px var(--edge)}
+button.rc-mk[aria-pressed=true]::after{box-shadow:0 0 0 2px var(--ink)}
+.rc-map-in{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:3px;background:var(--rc-sea)}
+.rc-map-in svg{display:block;width:100%;height:100%}
+.rc-grat{fill:none;stroke:#c9d9e5;stroke-width:.5}
+/* The sea is a step darker than the land, so a coast shows as an edge of the fill and the borders stay thin. */
+.rc-land{fill:var(--rc-land);stroke:var(--rc-coast);stroke-width:.45;stroke-linejoin:round}
+.rc-leads line{stroke:var(--ink);stroke-width:.9;opacity:.55}.rc-leads circle{fill:var(--ink)}
+.rc-map-name{position:absolute;transform:translate(-50%,-50%);color:#71849a;font-size:10px;letter-spacing:.04em;white-space:nowrap;pointer-events:none}
+/* The name of a place beside its marks (with the count when it has more than one row). */
+.rc-map-site{position:absolute;z-index:2;color:var(--ink);font-size:10.5px;font-weight:650;line-height:14px;white-space:nowrap;pointer-events:none;
+  text-shadow:0 0 2px var(--rc-land),0 0 2px var(--rc-land),0 0 3px var(--rc-land),0 0 3px var(--rc-land)}
+.rc-map-site b{color:var(--muted);font-family:var(--numeric)}
+.rc-pin{width:17px;height:17px;transform:translate(-50%,-50%)}
+.rc-pin::before{box-shadow:0 0 0 1.5px var(--paper)}
+.rc-pin[data-st=unknown]::before{box-shadow:inset 0 0 0 2px var(--mk),0 0 0 1.5px var(--paper)}
+.rc-pin span{position:relative;display:block;color:#fff;font:700 10px/17px var(--numeric);text-align:center}
+.rc-pin[data-st=unknown] span{color:var(--ink)}
+.rc-pin[data-st=closed] span{line-height:14px}
+/* A ring: the rows of one area on 세계. The arcs are the statuses (records.js sets the gradient), the number is the count. */
+.rc-group{position:absolute;z-index:1;padding:0;border:0;border-radius:50%;box-shadow:0 0 0 1.5px var(--paper),0 1px 4px rgba(25,37,52,.3)}
+.rc-group span{position:absolute;inset:4px;display:grid;place-items:center;border-radius:50%;background:var(--paper);color:var(--ink);font:700 10.5px/1 var(--numeric)}
+.rc-group:hover,.rc-group.rc-hot{z-index:3;box-shadow:0 0 0 2px var(--ink)}
+.rc-tl-lane,.rc-tl-axis{display:grid;grid-template-columns:var(--rc-tl-name,86px) minmax(0,1fr)}
+.rc-tl-lane{border-top:1px solid var(--line)}
+.rc-tl-name{align-self:center;overflow:hidden;color:var(--ink);font-size:10px;white-space:nowrap}
+.rc-tl-empty .rc-tl-name{color:var(--muted);opacity:.65}
+.rc-tl-plot{position:relative;min-height:22px}
+.rc-tl-in{position:absolute;inset:0 8px}
+.rc-tl-rule{position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.rc-tl-minor{opacity:.5}
+.rc-tl-old{position:absolute;top:0;bottom:0;left:-8px;border-right:1px dashed var(--edge);background:var(--surface)}
+/* A mark of the timeline: the button is wider than its shape and as high as its place in a stack, so the marks of a stack do not share what a finger hits. */
+.rc-dot{width:calc(var(--rc-dot,10px) + 10px);height:calc(var(--rc-dot,10px) + 2px);margin-bottom:-1px;transform:translateX(-50%)}
+.rc-dot::before{inset:1px 5px}
+button.rc-dot::after{inset:-2px 2px}
+/* The tail of a mark: back to the event day (a tick there), or a dashed stub when the event has no day. */
+.rc-tl-lag{position:absolute;height:0;border-top:1px solid #8794a3;pointer-events:none}
+.rc-tl-lag::before{content:"";position:absolute;top:-4px;left:-1px;height:7px;border-left:1.5px solid #6c7989}
+.rc-tl-lag-cut::before,.rc-tl-lag-open::before{content:none}
+.rc-tl-lag-open{width:11px;border-top-style:dashed;transform:translateX(calc(-100% - var(--rc-dot,10px) / 2 + 1px))}
+.rc-tl-axis{border-top:1px solid var(--edge)}
+.rc-tl-axis .rc-tl-plot{min-height:17px}
+.rc-tl-axis span:not(.rc-tl-name){position:absolute;top:3px;transform:translateX(-50%);color:var(--muted);font:10px var(--numeric);white-space:nowrap}
+.rc-tl-axis span.rc-tl-first{transform:none}.rc-tl-axis span.rc-tl-last{transform:translateX(-100%);color:var(--ink);font-weight:700}
+.rc-card{position:absolute;z-index:5;top:0;left:0;width:min(270px,100%);padding:9px 11px 10px;border:1px solid var(--edge);border-radius:4px;background:var(--paper);box-shadow:0 6px 18px rgba(25,37,52,.18);font-size:12px}
+.rc-card-top{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.rc-card-x{margin-left:auto;padding:0 5px;border:0;background:none;color:var(--muted);font-size:16px;line-height:1}
+.rc-card-name{display:block;font-size:13px;font-weight:700}
+.rc-card .rc-sub{display:block;margin:0}
+.rc-card-line{margin-top:4px;font-family:var(--numeric)}
+.rc-card-go{margin-top:7px;padding:3px 8px;border:1px solid var(--edge);border-radius:3px;background:var(--selected);color:var(--blue-strong);font-size:11px;font-weight:650}
+
+/* The six stages as one flow, 1 to 6; under each count a bar cut by status, as long as the stage's share of the largest. */
+.rc-flow{display:grid;grid-template-columns:auto repeat(6,minmax(0,1fr)) auto;align-items:stretch;gap:6px 18px;margin:10px 0 8px}
+.rc-flow button{position:relative;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name count" "stack stack";align-items:baseline;align-content:start;gap:3px 6px;min-width:0;padding:6px 9px 7px;border-color:var(--line);border-radius:4px;background:var(--paper);text-align:left}
+.rc-flow button span{grid-area:name;overflow:hidden;color:var(--muted);font-size:11px;font-weight:600;text-overflow:ellipsis;white-space:nowrap}
+.rc-flow button b{grid-area:count;font:700 16px var(--numeric)}
+.rc-flow button[aria-pressed=true] span{color:var(--blue-strong)}
+.rc-stack{display:flex;grid-area:stack;align-self:center;gap:2px;height:7px}
+.rc-stack i{min-width:3px;border-radius:1px;background:var(--rc-unknown)}
+.rc-stack i[data-st=open]{background:var(--rc-open)}.rc-stack i[data-st=plan]{background:var(--rc-plan)}
+.rc-stack i[data-st=resolved]{background:var(--rc-resolved)}.rc-stack i[data-st=closed]{background:var(--rc-closed)}
+.rc-stack i[data-st=unknown]{background:var(--rc-unknown-fill)}
+.rc-stack i.rc-rest{min-width:0;background:none}
+.rc-flow button[data-key="1"]::after,.rc-flow button[data-key="2"]::after,.rc-flow button[data-key="3"]::after,.rc-flow button[data-key="4"]::after,.rc-flow button[data-key="5"]::after{content:"";position:absolute;top:50%;right:-13px;width:6px;height:6px;border:solid var(--muted);border-width:1.5px 1.5px 0 0;transform:translateY(-50%) rotate(45deg)}
+
+/* Gantt: a tick on the announcement day, a bar to the end of the target period (hatched), the dashed line is 기준일.
+   Under it, one line per project that has no target period. */
+.rc-sw{--ph:var(--rc-none);display:inline-block;flex:none;width:10px;height:10px;border-radius:50%;background:var(--ph);box-shadow:inset 0 0 0 1px rgba(23,72,118,.45)}
+[data-ph=t1]{--ph:var(--rc-t1)}[data-ph=t2]{--ph:var(--rc-t2)}[data-ph=t3]{--ph:var(--rc-t3)}[data-ph=t4]{--ph:var(--rc-t4)}[data-ph=t5]{--ph:var(--rc-t5)}
+[data-ph=fix]{--ph:var(--rc-fix)}[data-ph=plan]{--ph:var(--rc-plan)}[data-ph=none]{--ph:var(--rc-none)}
+.rc-sw[data-ph=none]{background:var(--paper);box-shadow:inset 0 0 0 2px var(--ph)}
+.rc-key{margin:8px 0 6px}
+.rc-key button b{font-family:var(--numeric)}
+.rc-g-row{display:grid;grid-template-columns:330px minmax(0,1fr);gap:0 16px;align-items:center;min-height:27px;border-top:1px solid var(--line)}
+.rc-g-axis{min-height:16px;border-top:0}.rc-g-foot{border-top:1px solid var(--edge)}
+.rc-g-name{padding:4px 0;font-size:12px;line-height:1.35}
+.rc-g-name b{font-weight:680}
+.rc-g-ph{display:inline-flex;align-items:center;gap:4px;margin-left:7px;color:var(--muted);font-size:10px;white-space:nowrap}
+.rc-g-target{display:none}
+.rc-g-track{position:relative;align-self:stretch;min-height:24px;overflow:hidden}
+.rc-g-axis .rc-g-track{min-height:16px}
+.rc-g-in{position:absolute;inset:0 var(--rc-g-room,90px) 0 8px}
+.rc-g-rule{position:absolute;top:0;bottom:0;width:1px;background:var(--line)}
+.rc-g-now{position:absolute;top:0;bottom:0;border-left:1.5px dashed var(--ink);opacity:.6}
+.rc-g-axis span{position:absolute;top:1px;transform:translateX(-50%);color:var(--muted);font:10px var(--numeric);white-space:nowrap}
+.rc-g-axis span.rc-g-today{transform:translateX(-3px);color:var(--ink);font-weight:700}
+.rc-g-item{position:absolute;z-index:1;top:50%;height:22px;min-width:7px;padding:0;border:0;background:none;transform:translateY(-50%)}
+.rc-g-item::before{content:"";position:absolute;z-index:1;top:1px;bottom:1px;left:-1.5px;width:3px;border-radius:1.5px;background:var(--ink)}
+.rc-g-bar{position:absolute;inset:6px 0;border-radius:0 4px 4px 0;background:var(--ph);box-shadow:inset 0 0 0 1px rgba(23,72,118,.3)}
+.rc-g-win{position:absolute;top:6px;right:0;bottom:6px;border-radius:0 4px 4px 0;background:repeating-linear-gradient(135deg,rgba(255,255,255,0) 0 3px,rgba(255,255,255,.72) 3px 5px)}
+.rc-g-item:hover .rc-g-bar,.rc-g-item[aria-pressed=true] .rc-g-bar{box-shadow:inset 0 0 0 1.5px var(--ink)}
+/* The target wording after the bar; what does not fit in the rest of the row is cut (records.js sets max-width). */
+.rc-g-end{position:absolute;top:50%;overflow:hidden;margin-left:9px;transform:translateY(-50%);font-size:11px;text-overflow:ellipsis;white-space:nowrap;pointer-events:none}
+.rc-g-loose{margin-top:10px}
+.rc-g+.rc-g-loose{padding-top:9px;border-top:1px solid var(--edge)}
+.rc-g-loose-head{margin:0 0 4px;color:var(--muted);font-size:11px;font-weight:650}
+.rc-g-loose-head b{color:var(--ink);font-family:var(--numeric)}
+.rc-g-chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:0 22px}
+.rc-g-chip{display:grid;grid-template-columns:auto 86px minmax(0,1fr);align-items:center;gap:9px;min-height:27px;padding:2px 4px;border:0;border-top:1px solid var(--line);border-radius:0;background:none;color:inherit;font-size:12px;text-align:left}
+.rc-g-chip:hover{background:var(--surface)}.rc-g-chip[aria-pressed=true]{background:var(--selected)}
+.rc-g-chip-day{color:var(--blue-strong);font:650 11px var(--numeric)}
+.rc-g-chip-ph{display:inline-flex;align-items:center;gap:4px;color:var(--muted);font-size:10.5px;white-space:nowrap}
+.rc-g-chip-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc-g-chip-name b{font-weight:680}
+
+/* The tables: a record is a summary row of one line and a detail row under it. */
+.rc-table{table-layout:fixed}
+.rc-table th,.rc-table td{vertical-align:top}
+.rc-table thead th:first-child{width:92px}
+.rc-table tbody th{color:var(--blue-strong);font:650 12px/1.5 var(--numeric)}
+.rc-row{cursor:pointer}
+.rc-row:hover{background:var(--surface)}
+.rc-row th,.rc-row td{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc-row[data-open] th,.rc-row[data-open] td{overflow:visible;white-space:normal}
+.rc-row[data-open] th,.rc-row[data-open] td,.rc-row[data-open]{border-bottom-color:transparent}
+.rc-row td:empty::before{content:"—";color:var(--muted)}
+.rc-row:not([data-open]) small{display:none}
+.rc-row th small{white-space:normal}
+.rc-row td b{font-weight:660}
+.rc-row td small{line-height:1.45}
+.rc-from,.rc-from:hover{background:var(--selected)}
+.rc-table .rc-from th{box-shadow:inset 3px 0 0 var(--blue-strong);padding-left:8px}
+.rc-toggle{max-width:100%;padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;white-space:inherit}
+.rc-toggle::before{content:"";display:inline-block;width:5px;height:5px;margin:0 7px 2px 1px;border:solid var(--muted);border-width:0 1.5px 1.5px 0;transform:rotate(-45deg);transition:transform .12s}
+.rc-toggle[aria-expanded=true]::before{transform:rotate(45deg)}
+.rc-sub{margin-left:7px;color:var(--muted);font-size:11px}
+.rc-tags{display:inline-flex;gap:3px;vertical-align:top}
+.rc-row[data-open] .rc-tags{flex-wrap:wrap}
+.rc-more td{padding:0 0 12px}
+.rc-detail{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:8px 20px;padding:9px 12px;border-left:3px solid var(--edge);background:var(--surface);font-size:12px;line-height:1.5}
+.rc-detail>div>b{display:block;margin-bottom:1px;color:var(--muted);font-size:10px}
+.rc-detail small{margin-top:3px}
+/* Step tags of the 진행표. rc-row and rc-more have rules above; they also mark a record's rows for the tests. */
+.rc-status{font-weight:700}
+.rc-plan{background:var(--paper);box-shadow:inset 0 0 0 1px var(--edge);color:var(--ink)}
+.rc-unknown{background:transparent;box-shadow:inset 0 0 0 1px var(--line);color:var(--muted);font-weight:500}
+.rc-sources{margin:3px 0 0;padding-left:15px;font-size:11px}.rc-sources li{margin:2px 0}
+.rc-sources a,.rc-cards a{color:var(--blue);text-underline-offset:2px}
+.rc-cards{display:flex;flex-wrap:wrap;gap:2px 9px;margin-top:3px;font-size:11px}
+.rc-track{display:inline-grid;grid-template-columns:repeat(5,auto);justify-content:start;gap:2px;margin:0;padding:0;list-style:none;vertical-align:top}
+.rc-track li{padding:1px 5px;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:10px;text-align:center;white-space:nowrap}
+.rc-track li[aria-current]{border-color:var(--blue-strong);background:var(--blue-strong);color:var(--paper);font-weight:700}
+@media(min-width:761px){
+  #records-disruptions-data thead th:nth-child(2){width:27%}#records-disruptions-data thead th:nth-child(3){width:21%}
+  #records-disruptions-data thead th:nth-child(4){width:96px}
+  #records-contracts-data thead th:nth-child(2){width:19%}#records-contracts-data thead th:nth-child(3){width:25%}
+  #records-contracts-data thead th:nth-child(4){width:252px}
+}
+@media(max-width:1000px){
+  /* Two rows of four: 전체 1 2 3, then 4 5 6 and 6단계 밖. The arrow after 3 would leave the row. */
+  .rc-flow{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 15px}
+  .rc-flow button[data-key="3"]::after{content:none}
+}
+@media(max-width:760px){
+  .rc-table,.rc-table tbody,.rc-more,.rc-more td{display:block}
+  .rc-table thead{display:none}
+  .rc-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"a c d" "b b b" "e e e";align-items:center;gap:3px 8px;padding:8px 0 7px;border-bottom:1px solid var(--line)}
+  /* Opened, the date takes the first line with its notes beside it and the tags get a line of their own. */
+  .rc-row[data-open]{grid-template-areas:"a a d" "c c c" "b b b" "e e e";border-bottom:0}
+  .rc-row[data-open] th small{display:inline;margin-left:7px}
+  .rc-row th,.rc-row td{min-width:0;padding:0;border:0}
+  .rc-row th{grid-area:a}.rc-row td:nth-of-type(1){grid-area:b}.rc-row td:nth-of-type(2){grid-area:c}.rc-row td:nth-of-type(3){grid-area:d}.rc-row td:nth-of-type(4){grid-area:e}
+  #records-contracts-data .rc-row{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"a d" "b b" "c c" "e e"}
+  #records-contracts-data .rc-row td:nth-of-type(3){justify-self:end}
+  .rc-row td:empty{display:none}
+  .rc-from th{padding-left:8px}
+  .rc-more td{padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .rc-flow{gap:6px 13px}
+  /* The bar of a stage gets the whole width of its tile, so its pieces can be told apart. */
+  .rc-flow button{grid-template-columns:minmax(0,1fr);grid-template-areas:"name" "count" "stack";gap:1px 6px;padding:5px 7px 7px}
+  .rc-flow button b{line-height:1.25}
+  .rc-flow button span{font-size:10.5px}
+  .rc-flow button[data-key]::after{right:-10px}
+  .rc-g-row{grid-template-columns:minmax(0,1fr);padding:3px 0 2px}
+  .rc-g-axis{padding:0}.rc-g-axis .rc-g-name{display:none}
+  .rc-g-name{padding:2px 0 0}
+  .rc-g-track{min-height:22px}
+  /* The target wording goes up into the name line and the plot takes the whole width. */
+  .rc-g-target{display:inline-block;margin-left:8px;font-size:11px;font-weight:650}
+  .rc-g-end{display:none}
+  .rc-g-in{right:10px}
+  .rc-g-chip{grid-template-columns:auto 80px minmax(0,1fr);gap:7px}
+}
+
+/* Monitor first screen (redesign plan §3): weekly heatmap (live.js) and shock
+   tiles (monitor.js). Red is a rise and blue a fall (plan §5.1); every change
+   also carries ▲/▼ and its sign. */
+.monitor-top{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;align-items:start;margin:0 0 12px}
+.monitor-top.has-live{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+.live-more{margin:0 0 12px}
+.monitor-top .live-panel{margin:0}
+.live-panel,.heat-legend{--down4:#0466b1;--down3:#5d97d1;--down2:#a6c6e9;--down1:#d7e6f6;--flat:#efeeea;--up1:#fbdcdb;--up2:#f4abaa;--up3:#e8686b;--up4:#dc2223}
+.heat-head .kicker{margin:0;font-size:11px;font-weight:650;color:var(--muted)}
+.heat-head h2{margin:2px 0 0;font-size:17px;line-height:1.4;letter-spacing:-.02em}
+.heat-legend{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;margin:8px 0 4px;font-size:11px;color:var(--muted)}
+.heat-scale{display:inline-flex;gap:2px}
+.heat-legend i{display:inline-block;width:13px;height:10px;border-radius:2px;vertical-align:-1px}
+.heat-legend .heat-roll{margin-right:4px}
+.heat-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+.heat-table thead th{padding:4px 5px;border-bottom:1px solid var(--line);font-size:11px;font-weight:600;color:var(--muted);text-align:right;white-space:nowrap}
+.heat-table thead th:first-child{text-align:left}
+.heat-table thead th:nth-child(3),.heat-table thead th:nth-child(4){text-align:center}
+.heat-table tbody th[scope=row]{padding:3px 5px;border-top:1px solid var(--line);text-align:left;font-size:12.5px;font-weight:600;line-height:1.25}
+.heat-table tbody th small,.heat-last small{display:block;font-size:10.5px;font-weight:400;color:var(--muted)}
+.heat-table td{padding:3px 2px;border-top:1px solid var(--line);vertical-align:middle}
+.heat-table .heat-group th{padding:10px 5px 2px;border:0;text-align:left;font-size:11px;font-weight:700;color:var(--muted)}
+.heat-last{padding-right:8px!important;text-align:right;white-space:nowrap}
+.heat-last b{font-size:13.5px;font-weight:650}
+.heat-contract{display:inline-block;margin-left:4px;padding:0 4px;border:1px solid var(--edge);border-radius:3px;font-size:10px;line-height:15px;vertical-align:1px}
+.heat-cell{display:flex;align-items:center;justify-content:center;gap:3px;min-width:74px;height:34px;padding:0 4px;border-radius:3px;font-size:12px;font-weight:650;white-space:nowrap}
+.live-panel .flat,.heat-legend .flat{background:var(--flat)}
+.live-panel .down1,.heat-legend .down1{background:var(--down1)}
+.live-panel .down2,.heat-legend .down2{background:var(--down2)}
+.live-panel .down3,.heat-legend .down3{background:var(--down3)}
+.live-panel .down4,.heat-legend .down4{background:var(--down4);color:#fff}
+.live-panel .up1,.heat-legend .up1{background:var(--up1)}
+.live-panel .up2,.heat-legend .up2{background:var(--up2)}
+.live-panel .up3,.heat-legend .up3{background:var(--up3)}
+.live-panel .up4,.heat-legend .up4{background:var(--up4);color:#fff}
+.heat-roll{background:repeating-linear-gradient(135deg,#d9d9d3 0 2px,#f6f6f4 2px 6px);color:var(--ink)}
+.heat-cell.heat-roll{flex-direction:column;gap:0;font-size:11px;font-weight:600;line-height:1.2}
+.heat-cell.heat-roll small{font-size:10px;font-weight:400}
+.heat-none{text-align:center;color:var(--muted)}
+.heat-trend{width:118px}
+.heat-spark{display:block;width:112px;height:28px;overflow:visible}
+.heat-spark path{fill:none;stroke:#8e9299;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.heat-spark circle{fill:#9c2f8f;stroke:#fff;stroke-width:1.5}
+.heat-key{width:30px;height:10px;margin-right:4px;vertical-align:-1px;overflow:visible}
+.heat-key path{fill:none;stroke:#8e9299;stroke-width:1.5}
+.heat-key circle{fill:#9c2f8f}
+.live-panel>.note{margin-top:6px}
+.shock-panel{min-width:0}
+.shock-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.shock-tile{display:flex;flex-direction:column;gap:6px;min-width:0;padding:9px 10px;border:1px solid var(--line);border-radius:3px}
+.shock-tile h3{display:flex;justify-content:space-between;align-items:baseline;gap:6px;margin:0;font-size:12.5px;font-weight:650;letter-spacing:-.01em}
+.shock-tile h3 span{font-size:11px;font-weight:400;color:var(--muted);white-space:nowrap}
+.shock-value{margin:0;line-height:1.15}
+.shock-value b{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.shock-value small{margin-left:5px;font-size:12px;color:var(--muted)}
+.shock-bars{display:grid;gap:4px}
+.shock-bar{display:grid;grid-template-columns:56px minmax(0,1fr) 92px;align-items:center;gap:6px;font-size:11px;color:var(--muted)}
+.shock-track{position:relative;height:8px;border-radius:2px;background:#ebedf0}
+.shock-track b{position:absolute;top:0;bottom:0;border-radius:2px;background:#8e9299}
+.shock-track b.latest{background:#9c2f8f}
+.shock-bar em{font-style:normal;font-weight:650;color:var(--ink);white-space:nowrap;text-align:right}
+.shock-line{margin:0;font-size:11.5px;line-height:1.45;color:var(--muted)}
+.shock-foot{display:flex;flex-wrap:wrap;gap:2px 8px;margin:auto 0 0;padding-top:6px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.shock-foot a{color:var(--blue)}
+@media(min-width:1101px){.monitor-top.has-live .shock-grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:1100px){.monitor-top.has-live{grid-template-columns:minmax(0,1fr)}}
+/* Monitor rows below the first screen */
+.monitor-history{grid-template-columns:minmax(0,1.6fr) minmax(220px,.8fr);margin-bottom:12px}
+/* Home-record chips (monitor-chips.js): one labelled row per group, each chip links to its home section */
+#monitor-chips{display:grid;gap:7px;margin-bottom:12px;padding:10px 12px}
+.mc-row{display:grid;grid-template-columns:92px minmax(0,1fr);gap:8px;align-items:start}
+.mc-row h3{margin:7px 0 0;font-size:12px;color:var(--muted)}
+.mc-row .live-strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));margin:0}
+.mc-row .live-chip{min-width:0}
+.mc-row .live-chip small{white-space:normal}
+.mc-row+.mc-row{padding-top:7px;border-top:1px solid var(--line)}
+.live-chip.mc-link{align-content:center;border-style:dashed}
+.live-chip.mc-link b{font:650 13px/1.3 AtlasKR,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;color:var(--blue)}
+.monitor-map{margin-top:12px}
+.monitor-compare{display:grid;grid-template-columns:minmax(300px,1fr) minmax(0,2fr);gap:8px;align-items:start}
+.monitor-compare>.context-grid{margin-top:0}
+@media(max-width:1110px){.monitor-history{grid-template-columns:minmax(0,1fr)}.monitor-history .events-panel{grid-column:auto}}
+@media(max-width:860px){.monitor-compare{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:560px){
+  .shock-grid{grid-template-columns:minmax(0,1fr)}
+  .mc-row{grid-template-columns:minmax(0,1fr);gap:4px}
+  .mc-row h3{margin:0}
+  .heat-table thead th:last-child,.heat-trend{display:none}
+  .heat-cell{min-width:58px;font-size:11.5px}
+  .heat-table tbody th[scope=row]{font-size:12px}
+  .heat-contract{display:table;margin:1px 0 0 auto}
+  .heat-cell.heat-roll small{white-space:normal;text-align:center}
+}
+
+/* 자동 계열 패널 (auto-series.js): 미국 선물 크랙과 미국 CPI 품목. Table and
+   chart sit side by side and stack at 860px and below, where the page's own
+   grids close up (style.css). */
+.as-split{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;align-items:start}
+.as-split>div{min-width:0}
+.as-split .note+.table-scroll,.as-split .table-scroll+.note,.as-split .pills+div{margin-top:6px}
+.as-split .market-table small a{color:inherit}
+@media(max-width:860px){.as-split{grid-template-columns:1fr}}
+
+/* 기간구조 스프레드 (term-spreads.js): a tile per crude with the newest M1 − M2,
+   the line chart and the table under it; Brent − Dubai beside them. */
+.ts-sub{margin:0 0 6px;font-size:12.5px;font-weight:650;letter-spacing:-.01em}
+.ts-tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:8px}
+.ts-tiles.ts-one{grid-template-columns:minmax(0,1fr)}
+.ts-tile{min-width:0;padding:8px 10px;border:1px solid var(--line);border-radius:3px}
+.ts-tile h4{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:0 6px;margin:0;font-size:12.5px;font-weight:650}
+.ts-tile h4 span{font-size:11px;font-weight:400;color:var(--muted)}
+.ts-value{display:flex;flex-wrap:wrap;align-items:baseline;gap:3px 7px;margin:3px 0 2px;line-height:1.2}
+.ts-value b{font:700 24px/1.15 var(--numeric);letter-spacing:-.02em}
+.ts-value small{font-size:11px;color:var(--muted)}
+.ts-value em{padding:0 7px;border:1px solid var(--edge);border-radius:999px;font-style:normal;font-size:11.5px;font-weight:650}
+.ts-legs{margin:0;font:11px var(--numeric);color:var(--muted)}
+#term-spreads-table{margin-top:6px}
+#term-spreads-basis .method p{margin-top:3px}
+@media(max-width:420px){.ts-tiles{grid-template-columns:minmax(0,1fr)}}
+
+/* 미국 가동 리그와 시추 생산성 (rig-activity.js): tiles, then line charts, then
+   the folds. The tiles are four across, two at 860px and below. The first
+   chart is two columns wide; the grid is three columns, two at 1000px and
+   below and one at 570px. A chart's legend is also the readout of the month
+   under the pointer. Series colours are the first three of the reference
+   charts (--rf-c0..2); the total is the context grey. */
+.ra-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.ra-tile{display:grid;align-content:start;gap:1px;min-width:0;padding:6px 9px 7px;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+.ra-name{color:var(--muted);font-size:11px;line-height:1.3}
+.ra-val{font-size:17px;font-weight:700;line-height:1.35;letter-spacing:-.02em}
+.ra-val small{margin-left:3px;color:var(--muted);font-size:11px;font-weight:500;letter-spacing:0}
+.ra-meta{color:var(--muted);font-size:10.5px;line-height:1.4}
+.ra-meta>span{white-space:nowrap}
+.ra-charts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 24px;align-items:start;margin-top:12px}
+.ra-charts:empty{display:none}
+.ra-chart{min-width:0;margin:0}
+.ra-lead{grid-column:span 2}
+.ra-lead:only-child{grid-column:1/-1}
+.ra-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:0 8px;padding-bottom:3px;border-bottom:1px solid var(--edge)}
+.ra-head h3{margin:0;font-size:12.5px;font-weight:700;line-height:1.35;letter-spacing:-.02em}
+.ra-unit{flex:none;color:var(--muted);font-size:11px;white-space:nowrap}
+.ra-read{display:flex;flex-wrap:wrap;align-items:baseline;gap:1px 10px;min-height:18px;margin-top:4px;color:var(--muted);font-size:11px}
+.ra-read time{color:var(--ink);font:600 11px var(--numeric)}
+.ra-read span{white-space:nowrap}
+.ra-read i{display:inline-block;width:12px;height:2px;margin-right:4px;vertical-align:middle}
+.ra-read b{margin-left:4px;color:var(--ink);font:650 11.5px var(--numeric)}
+.ra-plot{display:block;width:100%;height:188px;margin-top:2px;touch-action:pan-y;cursor:crosshair}
+.ra-plot:focus-visible{outline-offset:1px}
+.ra-end{fill:var(--ink);font-size:10.5px}
+.ra-cursor line{stroke:#61798d;stroke-width:1}
+.ra-basis{margin-top:10px}
+.ra-basis:empty{display:none}
+.ra-basis .note+.note{margin-top:3px}
+.ra-basis .table-scroll{margin-top:6px}
+.ra-table{min-width:520px;color:var(--ink)}
+.ra-table tbody th{white-space:nowrap}
+/* A table of months is as long as its chart: it scrolls inside the fold under its own head. */
+.ra-months{max-height:320px;overflow-y:auto}
+.ra-months+.ra-months,.ra-basis details .note+.ra-months{margin-top:14px}
+.ra-basis details .note{margin-top:5px}
+.ra-months thead th{position:sticky;top:0}
+@media(max-width:1000px){.ra-charts{grid-template-columns:repeat(2,minmax(0,1fr))}.ra-lead{grid-column:1/-1}}
+@media(max-width:860px){.ra-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:570px){.ra-charts{grid-template-columns:minmax(0,1fr);gap:18px}.ra-lead{grid-column:auto}.ra-plot{height:176px}}
+
+/* 참조 자료 (reference-charts.js): the ref-* sections. A panel has its tiles, then
+   its charts (one unit a chart, the figure beside each bar as the manuscript
+   writes it), then the folded tables of words and the links to the panels that
+   already carry a figure. Colour marks a series, a tag, a group or a part and
+   is named in a legend or beside the row; a lone series keeps the one blue and
+   a row without a tag among tagged rows is grey. */
+:root{--rf-c0:#256aa8;--rf-c1:#c2571a;--rf-c2:#12876f;--rf-c3:#8a5cc2;--rf-c4:#9a7714;--rf-c5:#c23b6e}
+.rf-panel [data-c="1"]{--c:var(--rf-c1)}.rf-panel [data-c="2"]{--c:var(--rf-c2)}.rf-panel [data-c="3"]{--c:var(--rf-c3)}
+.rf-panel [data-c="4"]{--c:var(--rf-c4)}.rf-panel [data-c="5"]{--c:var(--rf-c5)}.rf-panel [data-c=none]{--c:var(--muted)}
+.rf-lede{margin:-3px 0 8px;font-size:12px}
+.rf-panels{display:grid;gap:10px}
+.rf-panel{min-width:0}
+.rf-pnote{margin:0 0 8px;color:var(--muted);font-size:11.5px;line-height:1.45}
+.rf-tiles,.rf-nums{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,178px),1fr));gap:6px}
+.rf-tiles+.rf-charts,.rf-charts+.rf-folds,.rf-tiles+.rf-folds{margin-top:12px}
+.rf-charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:18px 26px;align-items:start}
+/* A chart alone in its panel takes the width and sets its rows in two columns on the one scale. */
+.rf-charts[data-charts="1"]{grid-template-columns:minmax(0,1fr)}
+@media(min-width:900px){
+  .rf-charts[data-charts="1"] .rf-rows:not([data-groups]){column-count:2;column-gap:28px}
+  .rf-charts[data-charts="1"] .rf-row{break-inside:avoid}
+}
+@media(min-width:761px){
+  .rf-charts[data-lead]{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rf-charts[data-lead]>.rf-chart:first-child{grid-row:span var(--span,2)}
+}
+.rf-chart{min-width:0;margin:0}
+.rf-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding-bottom:3px;border-bottom:1px solid var(--edge)}
+.rf-head h3,.rf-head h4{margin:0;font-size:12.5px;font-weight:700;line-height:1.35;letter-spacing:-.02em}
+.rf-unit{flex:none;color:var(--muted);font:500 11px var(--numeric);white-space:nowrap}
+.rf-src,.rf-note,.rf-basis,.rf-scale{margin:3px 0 0;color:var(--muted);font-size:11px;line-height:1.45}
+.rf-src a,.rf-foot a,.rf-table th a,.rf-card{color:var(--blue);text-underline-offset:2px}
+.rf-total{margin:5px 0 0;font-size:12px}.rf-total b{font:700 15px var(--numeric)}.rf-total span{color:var(--muted);font-size:11px}
+.rf-legend{display:flex;flex-wrap:wrap;gap:2px 12px;margin-top:5px;color:var(--muted);font-size:11px}
+.rf-legend span{display:inline-flex;align-items:center;gap:5px}
+.rf-sw{display:inline-block;flex:none;min-width:10px;height:10px;border-radius:2px;background:var(--c,var(--rf-c0));color:var(--on,#fff);font:600 9.5px/14px var(--numeric);text-align:center}
+.rf-name .rf-sw{margin-right:6px;vertical-align:-1px}
+.rf-rows{margin-top:5px}
+.rf-row{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"name val" "track track";align-items:baseline;gap:2px 8px;padding:4px 2px 5px}
+.rf-row+.rf-row{border-top:1px solid var(--line)}
+.rf-row:hover,.rf-mini:hover,.rf-num:hover{background:var(--selected)}
+.rf-name{grid-area:name;min-width:0;font-size:12px;line-height:1.35}
+.rf-row .rf-name small{display:inline;margin-left:6px;color:var(--muted);font-size:10.5px}
+.rf-row .rf-name .rf-tag{padding:0 4px;border:1px solid var(--edge);border-radius:2px;white-space:nowrap}
+.rf-val{grid-area:val;font:650 12.5px var(--numeric);text-align:right;white-space:nowrap}
+.rf-track{grid-area:track;display:flex;height:9px;border-radius:1px;background:var(--surface)}
+.rf-track i{display:block;min-width:1px;border-radius:1px;background:var(--c,var(--rf-c0))}
+/* A number below zero: the bar is as long as the number is far from zero, hatched in the colour of its series. */
+.rf-track.rf-neg i{background:repeating-linear-gradient(135deg,var(--c,var(--rf-c0)) 0 2px,var(--paper) 2px 5px);box-shadow:inset 0 0 0 1px var(--c,var(--rf-c0))}
+/* grouped: the series of a row under its name, each a bar and its figure in one column. */
+.rf-set{display:block}
+.rf-line{display:grid;grid-template-columns:minmax(0,1fr) var(--val,6ch);align-items:center;gap:8px;margin-top:2px}
+.rf-line .rf-track{grid-area:auto;height:8px}
+.rf-line .rf-val{grid-area:auto;font-size:11.5px;line-height:1.3}
+.rf-long{grid-template-columns:minmax(0,1fr);gap:1px}.rf-long .rf-val{text-align:left;white-space:normal}
+/* stacked: the strip of the parts, then a bar a part on one scale. The widths of the segments are the shares and
+   add up to the strip: the line between two parts is drawn inside the segment, so no part is pushed out of the strip. */
+.rf-strip{display:flex;height:22px;margin-top:6px;border-radius:2px;overflow:hidden}
+.rf-seg{display:flex;align-items:center;justify-content:center;flex:0 1 auto;min-width:0;overflow:hidden;background:var(--c,var(--rf-c0));color:#fff;font:600 10.5px var(--numeric);white-space:nowrap}
+.rf-seg+.rf-seg{box-shadow:inset 1px 0 0 var(--paper)}
+/* Two or three parts: the rows under the strip are its legend, side by side. */
+.rf-key{display:flex;flex-wrap:wrap;gap:0 18px}
+.rf-key .rf-row{display:flex;gap:6px;padding:3px 0 0}.rf-key .rf-row+.rf-row{border-top:0}
+/* Groups: a block a group, side by side, each with bars on the one scale of the chart. */
+.rf-rows[data-groups]{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:0 28px;align-items:start}
+.rf-groupset{min-width:0}
+.rf-group{display:flex;align-items:center;gap:6px;margin-top:8px;padding:3px 2px;border-bottom:1px solid var(--edge);font-size:12px}
+.rf-group .rf-val{margin-left:auto}
+.rf-group+.rf-row{border-top:0}
+/* series: columns from the zero line; a small chart a row keeps its own scale. */
+.rf-minis{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:6px;margin-top:6px}
+.rf-mini{min-width:0;padding:5px 6px 4px;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+.rf-mini b{display:block;overflow:hidden;font-size:11.5px;line-height:1.3;white-space:nowrap;text-overflow:ellipsis}
+.rf-mini b small{margin-left:5px;padding:0 3px;border:1px solid var(--edge);border-radius:2px;color:var(--muted);font-size:10px;font-weight:500}
+.rf-cols{display:flex;gap:4px;margin-top:3px}
+.rf-col{display:grid;grid-template-rows:auto 72px auto;flex:1;min-width:0;text-align:center}
+.rf-small .rf-col{grid-template-rows:auto 40px auto}
+.rf-col em{font:600 10.5px var(--numeric);white-space:nowrap}
+.rf-plot{position:relative;display:block;border-bottom:1px solid var(--edge)}
+.rf-plot i{position:absolute;left:16%;right:16%;min-height:1px;border-radius:1px 1px 0 0;background:var(--rf-c0)}
+.rf-plot i.rf-neg{border-radius:0 0 1px 1px;background:var(--rf-c1)}
+.rf-plot u{position:absolute;left:0;right:0;border-top:1px solid var(--edge)}
+.rf-col small{color:var(--muted);font-size:10px}
+.rf-time{max-width:240px;margin-top:6px}.rf-time .rf-col em{font-size:12px}
+/* tile: one figure; the tile opens to its basis and source. A figure a table holds is a tile without the fold. */
+.rf-tile,.rf-num{min-width:0;border:1px solid var(--line);border-radius:3px;background:var(--surface)}
+.rf-tile summary,.rf-num{display:grid;align-content:start;gap:1px;padding:6px 9px 7px}
+.rf-tile summary{list-style:none;cursor:pointer}.rf-tile summary::-webkit-details-marker{display:none}
+.rf-tile summary:hover{background:var(--selected)}
+.rf-tile .rf-name,.rf-num .rf-name,.rf-tile .rf-val,.rf-num .rf-val{grid-area:auto}
+.rf-tile .rf-name,.rf-num .rf-name{color:var(--muted);font-size:11px;line-height:1.3}
+.rf-tile .rf-val,.rf-num .rf-val{font:700 16px/1.35 var(--numeric);text-align:left;white-space:normal}
+.rf-tile .rf-val small{color:var(--muted);font-size:11px;font-weight:500}
+.rf-meta{color:var(--muted);font-size:10.5px;line-height:1.35}
+.rf-scope{color:var(--ink)}
+.rf-tile[open]{grid-column:1/-1}
+.rf-in{padding:6px 9px 7px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
+.rf-in p+p,.rf-more p+p,.rf-fold p+p{margin-top:4px}
+/* table and links: folded. */
+.rf-folds{display:grid;gap:3px;padding-top:7px;border-top:1px solid var(--line)}
+.rf-folds:first-child{padding-top:0;border-top:0}
+.rf-fold{margin-top:0}.rf-fold summary em{margin-left:4px;color:var(--muted);font:500 11px var(--numeric)}
+.rf-nums{margin-bottom:3px}.rf-fold+.rf-nums{margin-top:8px}
+.rf-table{margin-top:6px;color:var(--ink)}
+.rf-table tbody th{min-width:118px;color:var(--ink);font:inherit;font-weight:650;vertical-align:top}.rf-table td{vertical-align:top}
+.rf-table .rf-card{display:block;font-size:10.5px;font-weight:500}
+.rf-table[data-cols="1"] tbody th{font-weight:500}
+.rf-list{margin:5px 0 0;padding-left:16px}.rf-list b{color:var(--ink);font-weight:650}
+.rf-more{margin-top:4px}.rf-foot{margin-top:5px}
+@media(max-width:570px){
+  .rf-charts{gap:20px}
+  .rf-minis{grid-template-columns:repeat(auto-fill,minmax(118px,1fr))}
+  /* A row of a table of words is a block: the name, then each cell under the name of its column. */
+  .rf-table thead{display:none}
+  .rf-table,.rf-table tbody,.rf-table tr,.rf-table th,.rf-table td{display:block}
+  .rf-table tr{padding:6px 0;border-bottom:1px solid var(--line)}
+  .rf-table th,.rf-table td{padding:1px 0;border:0}
+  .rf-table td::before{content:attr(data-label);display:block;margin-top:3px;color:var(--muted);font-size:10px}
+}

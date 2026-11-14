@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f4f6f8">
+<meta name="description" content="세계 에너지·식량·구리의 생산, 가공, 교역, 재고와 최종 가격을 비교한다.">
+<title>에너지 공급망 리서치 | 2025–2026</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="live.css">
+<link rel="stylesheet" href="supply.css">
+<link rel="stylesheet" href="subsidy.css">
+<script defer src="compat.js"></script>
+<script defer src="d3.min.js"></script>
+<script defer src="research.js"></script>
+<script defer src="facts.js"></script>
+<script defer src="live-data.js"></script>
+<script defer src="live.js"></script>
+<script defer src="monitor.js"></script>
+<script defer src="value-chain-data.js"></script>
+<script defer src="value-chain.js"></script>
+<script defer src="supply.js"></script>
+<script defer src="subsidy-data.js"></script>
+<script defer src="subsidy.js"></script>
+<script defer src="app.js"></script>
+<script defer src="maps.js"></script>
+<script defer src="market-expansion.js"></script>
+<script defer src="geopolitics.js"></script>
+<script defer src="records-data.js"></script>
+<script defer src="records.js"></script>
+<script defer src="refinery-roster-data.js"></script>
+<script defer src="refinery-roster.js"></script>
+<script defer src="peer-quarters-data.js"></script>
+<script defer src="peer-quarters.js"></script>
+<script defer src="reference-data.js"></script>
+<script defer src="reference-charts.js"></script>
+<script defer src="workspace.js"></script>
+<script defer src="market-insights.js"></script>
+<script defer src="transmission.js"></script>
+<script defer src="energy-extensions.js"></script>
+<script defer src="market-cases.js"></script>
+<script defer src="industry-cases.js"></script>
+<script defer src="supply-followup.js"></script>
+<script defer src="physical-comparisons.js"></script>
+<script defer src="auto-series.js"></script>
+<script defer src="term-spreads.js"></script>
+<script defer src="rig-activity.js"></script>
+<script defer src="monitor-chips.js"></script>
+<script defer src="commodity-chains.js"></script>
+<script defer src="research-coverage.js"></script>
+<script defer src="research-search.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">본문으로 건너뛰기</a>
+<header class="top"><div class="wrap top-inner">
+<a href="#main" class="brand"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 21 21" fill="none"><path d="M1 16L6 12L10 14L15 5L20 2M15 2H20V7" stroke="currentColor" stroke-width="1.6"/><path d="M1 20H20" stroke="currentColor" stroke-opacity=".5"/></svg>에너지 공급망 리서치</a>
+<button type="button" class="desk-sheet-button" aria-expanded="false" aria-controls="desk-sheet"><span>시장 모니터</span></button>
+<div class="desk-sheet" id="desk-sheet"><nav class="desk-tabs" aria-label="데스크">
+<div class="desk-group" role="group" aria-label="오늘"><span aria-hidden="true">오늘</span><a href="#monitor" data-tab="monitor" aria-current="page">시장 모니터</a></div>
+<div class="desk-group" role="group" aria-label="충격"><span aria-hidden="true">충격</span><a href="#war" data-tab="war">지정학</a></div>
+<div class="desk-group" role="group" aria-label="상품"><span aria-hidden="true">상품</span><a href="#oil" data-tab="oil">원유</a><a href="#products" data-tab="products">정유·석유화학</a><a href="#supply" data-tab="supply">제품별 수급</a><a href="#gas" data-tab="gas">천연가스·LNG</a><a href="#power" data-tab="power">석탄·전력</a><a href="#copper" data-tab="copper">구리</a><a href="#food" data-tab="food">식량</a></div>
+<div class="desk-group" role="group" aria-label="전이"><span aria-hidden="true">전이</span><a href="#prices" data-tab="prices">산업비용</a><a href="#inflation" data-tab="inflation">물가전이</a><a href="#companies" data-tab="companies">밸류체인 기업</a></div>
+<div class="desk-group" role="group" aria-label="근거"><span aria-hidden="true">근거</span><a href="#source-list" data-tab="sources">출처</a></div>
+</nav><a href="../index.html" class="dashboard-link">매크로 대시보드 ↩</a></div>
+<nav class="top-views" aria-label="하위 화면"></nav>
+<button type="button" class="search-trigger" id="research-search-open" aria-haspopup="dialog"><svg aria-hidden="true" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4.5 4.5"/></svg><span>자료 찾기</span> <kbd aria-hidden="true">/</kbd></button>
+</div></header>
+<main id="main" class="wrap">
+<h1 class="visually-hidden">에너지 공급망 리서치</h1>
+<div class="desk" data-desk="war" id="war">
+<div class="desk-heading"><h2>지정학</h2></div>
+<nav class="section-jump" aria-label="이 화면의 상세 항목"><a href="#investigation">두 전쟁 비교</a><a href="#geopolitics">정유 공격·휴전</a><a href="#israel-iran">이스라엘·이란 협상</a><a href="#escort-watch">호르무즈 호위</a><a href="#fleet">섀도우 플릿</a></nav>
+<article class="panel context-grid" id="supply-history"><div class="panel-head"><h3>시기별 수송·공급 구조 변화</h3><span class="meta">수에즈 · 전략비축 · 러시아 가스 · 호르무즈</span></div><div id="supply-history-data"></div></article>
+<section id="investigation" class="section">
+<div class="section-head"><h2>전쟁별 공급 지표 비교</h2><span class="meta">경로별 관측값</span></div>
+<article class="panel"><div class="panel-head"><h3>전쟁 발발 전후 원유·디젤 크랙</h3><span class="meta">2월 → 3월 월평균 변화 · 달러/배럴</span></div><div id="war-price-bridge"></div></article>
+<div id="war-matrix" class="panel table-scroll context-grid"></div>
+<details class="method"><summary>전쟁별 조사 노트</summary><div class="detail-grid research-grid" id="war-cards"></div></details>
+<details class="method"><summary>지역별 산업 노출</summary><div class="panel" id="regional-research"></div></details>
+
+</section>
+<section class="section" id="geopolitics"><div class="section-head"><h2>정유시설과 에너지 휴전</h2></div><div class="panel context-main"><div id="actor-flow"></div><div id="actor-table" class="table-scroll"></div></div>
+<div class="detail-grid context-grid"><article class="panel"><div class="panel-head"><h3>10월 협상과 공격 재개</h3><span class="meta">2026년</span></div><div id="truce-timeline"></div><div id="russia-strike-followup" class="context-grid"></div></article><article class="panel"><div class="panel-head"><h3>이란 수출 경로와 러시아의 중국 판매·가스 협의</h3></div><div id="iran-routes"></div></article></div><p class="note context-caption"><a class="ref" href="#fleet">섀도우 플릿 완화와 운임 ↗</a></p></section>
+<section class="section" id="israel-iran"><div class="section-head"><h2>이스라엘 연정과 이란 핵 협상의 조건</h2><span class="meta">2026년 10월 27일 총선 · 11월 5일 협의</span></div><div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>확정 의석과 정부 구성 후보 추천</h3></div><div id="knesset-count"></div></article>
+<article class="panel"><div class="panel-head"><h3>핵 협상과 호르무즈 통항</h3></div><div id="iran-diplomacy"></div></article>
+</div></section>
+<section class="section" id="escort-watch"><div class="section-head"><h2>호르무즈 호위와 통항·보험</h2><span class="meta">2026년 5월 호위 · 6월 합의</span></div>
+<div class="detail-grid"><article class="panel"><div class="panel-head"><h3>미국 호위 개시 전후 통항</h3><span class="meta">5월 1~4일 · 척/일</span></div><div id="escort-counts"></div></article>
+<article class="panel"><div class="panel-head"><h3>피격 보도와 전쟁보험</h3></div><div id="escort-conditions" class="table-scroll"></div></article></div></section>
+<section class="section" id="fleet"><div class="section-head"><h2>제재·보험과 선복</h2></div><article class="panel"><div class="panel-head"><h3>섀도우 플릿 완화: 투입 단계와 운임 반응</h3><a href="#shipping" class="ref">[운임표]</a></div><div id="fleet-flow"></div><div id="fleet-note" class="context-caption"></div></article></section>
+</div>
+<div class="desk" data-desk="oil" id="oil">
+<div class="desk-heading"><h2>원유</h2></div>
+<nav class="section-jump" aria-label="이 페이지의 항목"><a href="#oil-map">지도·가격</a><a href="#crude-transmission">물량·운임·가격</a><a href="#futures-physical">선물과 실물</a><a href="#physical-crude">실물 조달·회복 시나리오</a><a href="#gulf-recovery">걸프 수출</a><a href="#sea-flows">호르무즈·우회로</a><a href="#shipping">원유선 운임</a><a href="#tanker-assets">유조선 가격</a><a href="#td3c-case">TD3C 소송</a><a href="#oil-balance">비축·재고</a><a href="#oil-buffers">비축 방출</a><a href="#brent-market">브렌트 가격 산정</a><a href="#brent-curve">근월·원월물</a><a href="#term-spreads">기간구조 스프레드</a><a href="#chain">밸류체인</a><a href="#upstream-investment">상류 투자</a><a href="#rig-activity">미국 리그·시추</a><a href="#offshore-cycle">해양시추</a></nav>
+<section class="section commodity-overview" id="crude-overview"><div class="overview-grid"><section id="oil-map" class="panel map-panel commodity-map" data-map="oil">
+<div class="panel-head"><h3>원유 공급 경로</h3><div id="oil-map-tabs" class="pills" role="group" aria-label="원유 공급 경로 지역"></div></div>
+<div class="map-detail" data-map-detail aria-live="polite"></div>
+<div class="map-canvas"><svg viewBox="0 0 760 290" role="group" aria-label="원유 공급 경로"></svg><p data-map-message role="status">지도 불러오는 중</p></div>
+<div class="map-bottom"><div class="map-legend"><span><i class="oil"></i>원유선·원유 배관</span></div><label for="oil-map-select" class="visually-hidden">원유 항로·시설 선택</label><select id="oil-map-select" data-route-select><option>경로·시설</option></select></div>
+<details class="method"><summary>지도 기준</summary><p>경로를 선택하면 관측 물량이나 설비 기준을 볼 수 있다. 지도 선은 대표 경로이며, 선택한 경로를 강조한다. 기초 지리 Natural Earth · 시설 위치 NGA WPI 및 공개 자료.</p></details>
+</section><div class="commodity-data"><article class="panel"><div class="panel-head"><h3>주요 원유 벤치마크</h3><span class="meta">분기 평균 · 달러/배럴</span></div><div id="crude-quotes" class="table-scroll"></div></article><article class="panel"><div class="panel-head"><h3>호르무즈 원유 통과량</h3><span class="meta">분기 일평균</span></div><div id="crude-flows"></div></article></div></div></section>
+<section class="section transmission" id="crude-transmission">
+<div class="section-head"><h2>걸프 수출 회복과 원유 도착 비용</h2><span class="meta">2026년 8월 → 9월</span></div>
+<div class="transmission-grid">
+<article class="panel"><div class="panel-head"><h3>걸프 수출·호르무즈·우회로</h3><span class="meta">백만 배럴/일</span></div><div id="crude-route-bridge"></div></article>
+<article class="panel"><div class="panel-head"><h3>미국 걸프발 원유 운임</h3><span class="meta">달러/톤</span></div><div id="crude-freight-bridge"></div></article>
+<article class="panel"><div class="panel-head"><h3>실물 원유 가격</h3><span class="meta">달러/배럴</span></div><div id="crude-price-bridge"></div></article>
+</div>
+</section>
+<article class="panel context-grid" id="monthly-oil-supply"><div class="panel-head"><h3>8~9월 수송·현물·재고 비교</h3><span class="meta">동일 월 구간 · 가격·유량·재고 단위 구분</span></div><div id="monthly-oil-supply-data"></div></article>
+<section class="section" id="futures-physical"><div class="section-head"><h2>선물 종가와 실물 공급 지표</h2><span class="meta">2026년 11월 3~5일</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>같은 만기 원유 선물 종가</h3><span class="meta">달러/배럴</span></div><div id="nearby-settlements"></div></article>
+<article class="panel"><div class="panel-head"><h3>가격 곡선·공급 회복·재고</h3><span class="meta">시장 가격과 전망을 구분</span></div><div id="curve-scenarios"></div></article></div></section>
+<section class="section" id="physical-crude"><div class="section-head"><h2>전쟁 프리미엄과 실물 공급</h2><span class="meta">2026년 10~11월 · 가격과 물량</span></div><div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>원유와 정제제품의 수출 회복</h3></div><div id="cargo-basis"></div></article>
+<article class="panel"><div class="panel-head"><h3>선물 하락과 조달 프리미엄</h3></div><div id="ubs-brent"></div></article>
+</div><article class="panel context-grid"><div class="panel-head"><h3>휴전과 확전 이후의 수급 시나리오</h3></div><div id="physical-recovery-paths"></div><div id="oil-research-checks"></div></article></section>
+<section class="section" id="gulf-recovery"><div class="section-head"><h2>걸프 원유·제품 수출과 전쟁 전 대비 수준</h2><span class="meta">2026년 9~10월 · 선박 추적 잠정치</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>걸프 해상 석유 수출</h3><span class="meta">백만 배럴/일</span></div><div id="gulf-total"></div></article><article class="panel"><div class="panel-head"><h3>10월 품목별 수출과 전쟁 전 수준</h3><span class="meta">백만 배럴/일</span></div><div id="gulf-mix"></div></article></div></section>
+<section class="section" id="gulf-outlets"><div class="section-head"><h2>걸프 원유 수출 경로의 차질과 대안</h2><span class="meta">10월 27일~11월 5일</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>사우디 라스 타누라·얀부</h3><span class="meta">선적항과 정유소 구분</span></div><div id="saudi-outlets"></div></article>
+<article class="panel"><div class="panel-head"><h3>UAE 푸자이라 우회 배관</h3><span class="meta">운영·계획·미확인 구분</span></div><div id="uae-outlets"></div></article></div></section>
+<section class="section" id="sea-flows"><div class="section-head"><h2>호르무즈 원유 유량과 수출로</h2></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>걸프 수출과 해협 통과</h3><span class="meta">2026년 9월</span></div><div id="sea-flows-data"></div></article><article class="panel"><div class="panel-head"><h3>항로·우회 배관</h3><span class="meta"></span></div><div class="route-links"><a class="ref" href="#oil-map" data-region="gulf" data-site="hormuz">호르무즈 해협 ↗</a><a class="ref" href="#oil-map" data-region="gulf" data-site="ew">사우디 동서 송유관 ↗</a><a class="ref" href="#oil-map" data-region="gulf" data-site="adcop">UAE 푸자이라 우회 ↗</a><a class="ref" href="#oil-map" data-region="asia" data-site="iran-china">이란 → 중국 원유 ↗</a></div></article></div></section>
+<section class="section rf-section" id="ref-chokepoints"><div class="section-head"><h2>해협·우회로별 석유 통과량</h2><span class="meta">EIA <time datetime="2026-08-12">2026.08.12</time> 공표 · 4Q25와 2Q26</span></div>
+<p class="note rf-lede">원유·석유계 액체의 관측 통과량이며 경로가 겹치므로 통행로끼리 더하지 않는다.</p>
+<div class="rf-panels" id="ref-chokepoints-panels"></div></section>
+<section id="shipping" class="section"><span id="shipping-desk"></span>
+<div class="section-head"><h2>원유 탱커 운임</h2><span class="meta">발틱거래소 · 2025.10.31 / 2026.10.30</span></div>
+<div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>원유선·항로별 44주차 비교</h3></div><div class="table-scroll" id="freight-table"></div>
+<details class="method"><summary>월드스케일과 일일 환산수익</summary><p>월드스케일(WS) 100은 해당 항로의 기준 톤당 운임이다. 기준은 매년 갱신된다. 왕복 일일 환산수익(TCE)은 항해 운임에서 연료와 항해비를 빼고 왕복 일수로 나눈다. 선박 고정비와 금융비 차감 전이다. <a class="ref" href="#s-wscale">[WS]</a> <a class="ref" href="#s-tce">[TCE]</a></p></details></article>
+<article class="panel"><div class="panel-head"><h3>초대형 원유운반선(VLCC) · TD3C</h3><span class="meta">중동 걸프 → 중국</span></div><p class="note">왕복 일일 환산수익 · 백만 달러/일 · 2026년 10월</p><div id="vlcc-plot"></div>
+<div class="panel-head split-head"><h3>화주 부담 원유 운송비</h3><span class="meta">10월 중순 · 달러/배럴</span></div><div id="route-costs"></div>
+<p class="note">호르무즈 혼잡과 환적으로 왕복 시간이 늘었다. 일부 장거리 제품선(LR2)이 원유를 실으면서 제품선 공급도 줄었다. <a class="ref" href="#s-ieafreight">[IEA]</a></p>
+</article></div>
+</section>
+<section class="section" id="td3c-case"><div class="section-head"><h2>TD3C 기준가격 분쟁</h2><span class="meta">영국 고등법원 · FL-2026-000015</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>고정 용선료와 지수연동 재용선</h3><span class="meta">달러/일 · 계약 구조</span></div><div id="td3c-contract"></div></article>
+<article class="panel"><div class="panel-head"><h3>당사자 주장과 법원 절차</h3><span class="meta">본안 결과 확인 기준일 표기</span></div><div id="td3c-litigation"></div></article></div></section>
+<article class="panel context-grid" id="td3c-basis"><div class="panel-head"><h3>운임 계약·지수·보험료의 차이</h3><span class="meta">TD3C 항로 · 각 지표의 정산 기준</span></div><div id="td3c-basis-data"></div></article>
+<section class="section" id="tanker-assets">
+<div class="section-head"><h2>유조선 가격과 호르무즈 운항 선복</h2><span class="meta">2026년 9~10월</span></div>
+<div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>VLCC 신조·중고선 평가</h3><span class="meta">백만 달러/척</span></div><div id="tanker-values"></div></article>
+<article class="panel"><div class="panel-head"><h3>호르무즈 9월 원유 통과량</h3><span class="meta">백만 배럴 · 선박 소유 그룹별</span></div><div id="shuttle-flows"></div></article>
+</div></section>
+<section class="section" id="oil-balance"><div class="section-head"><h2>원유 비축과 세계 석유 재고</h2></div><div class="two stock-notes">
+<article class="panel"><h3>한국 정부 비축유</h3><div class="stock-value">1억 배럴</div><p>2025년 말 보유량, 국제공동비축 제외. 시설 저장능력은 1억 4,600만 배럴이다. 2026년 3월 IEA 공동 방출에서 한국에 2,246만 배럴이 배정됐다. 같은 정의로 비교할 2026년 말 보유량은 기준일에 아직 집계할 수 없다. <a class="ref" href="#s-knoc">[KNOC]</a> <a class="ref" href="#s-motir">[산업부]</a></p></article>
+<article class="panel"><h3>세계 재고와 해상 물량</h3><div class="stock-value">−5.09억 배럴</div><p>IEA가 관측한 2026년 2월 말~9월 말 세계 석유 재고 변화다. 9월 한 달간 육상은 1.13억 배럴 줄고 해상은 1.03억 배럴 늘었다. 해상 물량은 도착·하역 전까지 현지 공급에 투입되기 어렵다. 10월 15일 기준 IEA 회원국의 공동 방출 물량은 약 3.3억 배럴이다. <a class="ref" href="#s-ieaoil">[IEA]</a> <a class="ref" href="#s-release">[방출]</a></p></article>
+</div>
+<article class="panel context-grid"><div class="panel-head"><h3>9월 세계 석유 재고 변화</h3><span class="meta">전월 말 대비 · 백만 배럴</span></div><div id="world-stock-bridge"></div><div id="crude-stocks"></div><details class="method"><summary>미국 API 주간 원유 재고</summary><p>미국 API 주간 원유 재고는 10월 14일 미국 발표 기준 −1,112만 배럴이다. 예상 +190만, 이전 −209만 배럴이다. <a class="ref" href="#s-api1014">[발표 달력]</a></p></details></article></section>
+<section class="section" id="oil-buffers"><div class="section-head"><h2>전략비축 방출과 소비지 재고</h2><span class="meta">10월 26일~11월 2일</span></div><div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>유럽 11개국 비축 방출 계획</h3></div><div id="europe-stock-release"></div></article>
+<article class="panel"><div class="panel-head"><h3>재고 감소와 비축 정책의 범위</h3></div><div id="stock-buffer-scope"></div></article>
+</div></section>
+<section class="section rf-section" id="ref-crude-stocks"><div class="section-head"><h2>전략 재고 추정과 각국 공식 비축 자료</h2><span class="meta">EIA <time datetime="2026-08-12">2026.08.12</time> 공개 추정 · 각국 자료는 기준일이 다름</span></div>
+<p class="note rf-lede">EIA가 여러 기관의 관측을 모은 선정 국가·권역 추정표와 각국이 따로 공개한 비축 자료이며, 범위와 기준일이 달라 서로 더하거나 잇지 않는다.</p>
+<div class="rf-panels" id="ref-crude-stocks-panels"></div></section>
+<article class="panel context-grid" id="stock-programs"><div class="panel-head"><h3>방출 발표와 실제 집행</h3><span class="meta">프랑스·유럽·G7·IEA · 미국 SPR 구성</span></div><div id="stock-programs-data"></div></article>
+<section id="brent-market" class="section">
+<div class="section-head"><h2>데이티드 브렌트와 실물 원유 가격</h2><span class="meta">현물 평가 · 선도 · 선물</span></div>
+<div class="detail-grid"><article class="panel"><div class="panel-head"><h3>데이티드 브렌트 평가 절차</h3></div><div id="brent-flow"></div><div id="brent-basis"></div></article>
+<article class="panel"><div class="panel-head"><h3>브렌트 상품별 가격 노출</h3></div><div id="brent-products" class="table-scroll"></div></article></div>
+<div class="detail-grid context-grid"><article class="panel"><div class="panel-head"><h3>화물 호가의 단가 환산</h3><span class="meta">달러/배럴 · 산식 예시</span></div><div id="brent-quote"></div></article>
+<article class="panel"><div class="panel-head"><h3>품질·운임 조정</h3></div><div id="brent-adjustments" class="table-scroll"></div></article></div>
+</section>
+<article class="panel context-grid" id="term-spreads"><div class="panel-head"><h3>기간구조 스프레드</h3><span class="meta" id="term-spreads-asof">달러/배럴</span></div><div class="as-split"><div><div id="term-spreads-data"></div><div id="term-spreads-chart"></div><div id="term-spreads-table"></div></div><div id="grade-spread-data"></div></div><div id="term-spreads-basis"></div></article>
+<article class="panel context-grid" id="brent-curve"><div class="panel-head"><h3>브렌트 근월·원월 비교</h3><span class="meta">2026년 11월 · 달러/배럴</span></div><div id="brent-curve-data"></div></article>
+<section id="chain" class="section">
+<div class="section-head"><h2>원유 공급망 단계</h2><span class="meta">공정 · 유량 · 최종 수요</span></div>
+<div class="panel flow-panel">
+<div id="chain-steps" class="chain-steps" role="group" aria-label="밸류체인 단계"></div><div id="chain-detail" aria-live="polite"></div></div>
+</section>
+<section class="section" id="upstream-investment">
+<div class="section-head"><h2>정제품·원유 생산자·신규 투자 확인 지표</h2></div>
+<div class="panel" id="upstream-mechanism"></div>
+<div class="detail-grid context-grid">
+<article class="panel"><div class="panel-head"><h3>석유·가스 서비스 업황</h3><span class="meta">SLB · 2026년 3분기</span></div><div id="slb-activity"></div></article>
+<article class="panel"><div class="panel-head"><h3>미국 공급 확대 정책: 결정·집행·실물 공급</h3></div><div id="us-oil-policy"></div><div id="upstream-followup" class="context-grid"></div></article>
+</div></section>
+<section class="section" id="rig-activity"><div class="section-head"><h2>미국 가동 리그와 시추 생산성</h2><span class="meta" id="rig-activity-asof">월간 · EIA</span></div>
+<div class="panel"><div id="rig-activity-data"></div><div id="rig-activity-charts" class="ra-charts"></div><div id="rig-activity-basis" class="ra-basis"></div></div></section>
+<section class="section rf-section" id="ref-rig-counts"><div class="section-head"><h2>가동 리그 수: 최근 집계와 국가별 기준선</h2><span class="meta">Baker Hughes 주간 <time datetime="2026-11-06">2026.11.06</time>·월간 <time datetime="2026-10">2026.10</time> · OPEC ASB 2025·2024년 말</span></div>
+<p class="note rf-lede">가동 리그 수의 단위는 기이고, 시추 대상에는 석유 외에 가스 등이 포함될 수 있으며 생산량 b/d로 환산할 수 없다.</p>
+<div class="rf-panels" id="ref-rig-counts-panels"></div></section>
+<article class="panel context-grid" id="producer-netback"><div class="panel-head"><h3>원유 생산자의 실현가격과 투자</h3><span class="meta">Diamondback · 2026년 3분기</span></div><div id="producer-netback-data"></div></article>
+<section class="section" id="offshore-cycle"><div class="section-head"><h2>해양시추선 공급과 신규 개발 경제성</h2><span class="meta">유전 감산 · 개발 승인 · 시추선 계약</span></div><div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>시추선 공급과 계약 일당</h3></div><div id="offshore-fleet"></div></article>
+<article class="panel"><div class="panel-head"><h3>장기 유가와 신규 개발의 경제성</h3></div><div id="offshore-economics"></div></article>
+</div></section>
+</div>
+<div class="desk" data-desk="products" id="products">
+<div class="desk-heading"><h2>정유·석유화학</h2></div>
+<nav class="section-jump" aria-label="이 페이지의 항목"><a href="#products-map">지도·제품 가격</a><a href="#diesel-transmission">디젤 공급·가격</a><a href="#quarter-cracks">제품별 크랙</a><a href="#futures-cracks">미국 선물 크랙</a><a href="#product-stocks">제품 재고</a><a href="#diesel-exports-asia">아시아 디젤 수출</a><a href="#refinery-compare">지역별 마진·가동</a><a href="#refinery-run-model">도착비 계산</a><a href="#refineries">정유시설·공정</a><a href="#fuel-specs">MTBE·동절기 연료</a><a href="#brazil-sugar-mix">브라질 설탕·에탄올</a><a href="#product-shipping">제품선 운임</a><a href="#diesel-cost">최종 경유 가격 ↗</a></nav>
+<section class="section commodity-overview" id="products-overview"><div class="overview-grid"><section id="products-map" class="panel map-panel commodity-map" data-map="products">
+<div class="panel-head"><h3>석유제품 항로와 정유시설</h3><div id="products-map-tabs" class="pills" role="group" aria-label="석유제품 항로와 정유시설 지역"></div></div>
+<div class="map-detail" data-map-detail aria-live="polite"></div>
+<div class="map-canvas"><svg viewBox="0 0 760 290" role="group" aria-label="석유제품 항로와 정유시설"></svg><p data-map-message role="status">지도 불러오는 중</p></div>
+<div class="map-bottom"><div class="map-legend"><span><i class="product"></i>석유제품 항로</span></div><label for="products-map-select" class="visually-hidden">석유제품 항로·시설 선택</label><select id="products-map-select" data-route-select><option>경로·시설</option></select></div>
+<details class="method"><summary>지도 기준</summary><p>경로를 선택하면 관측 물량이나 설비 기준을 볼 수 있다. 지도 선은 대표 경로이며, 선택한 경로를 강조한다. 기초 지리 Natural Earth · 시설 위치 NGA WPI 및 공개 자료.</p></details>
+</section><div class="commodity-data"><article class="panel"><div class="panel-head"><h3>디젤·휘발유·항공유 현물가</h3><span class="meta">분기 평균 · 달러/배럴</span></div><div id="product-quotes" class="table-scroll"></div></article><article class="panel"><div class="panel-head"><h3>호르무즈 석유제품 통과량</h3><span class="meta">분기 일평균</span></div><div id="product-flows"></div></article></div></div></section>
+<section class="section transmission" id="diesel-transmission">
+<div class="section-head"><h2>정유 원유 투입·경유 현물·경유 판매가</h2><span class="meta">2026년 2분기 → 3분기</span></div>
+<div class="transmission-grid">
+<article class="panel"><div class="panel-head"><h3>정유 원유 투입 변화</h3><span class="meta">각 분기 전분기 대비 · 백만 배럴/일</span></div><div id="diesel-runs-bridge"></div></article>
+<article class="panel"><div class="panel-head"><h3>미국 걸프연안 경유 현물과 크랙</h3><span class="meta">달러/배럴</span></div><div id="diesel-wholesale-bridge"></div></article>
+<article class="panel"><div class="panel-head"><h3>경유 판매가</h3><span class="meta">세금 포함 · 전분기 대비</span></div><div id="diesel-retail-bridge"></div></article>
+</div>
+<div id="diesel-reading" class="panel transmission-reading"></div>
+</section>
+<section class="section" id="oil-market"><div class="section-head"><h2>제품값과 원유값의 차이</h2><span class="meta">정유 크랙 · 달러/배럴</span></div>
+<article class="panel"><div class="panel-head"><h3>미국 걸프연안 제품별 크랙</h3><span class="meta">2026년 분기 평균 · 달러/배럴</span></div><div id="quarter-cracks"></div></article>
+<article class="panel context-grid" id="futures-cracks"><div class="panel-head"><h3>미국 선물 크랙</h3><span class="meta" id="futures-cracks-asof">WTI 선물 기준 · 달러/배럴</span></div><div class="as-split"><div id="futures-cracks-data"></div><div id="futures-cracks-chart"></div></div><div id="futures-cracks-basis"></div></article>
+<div class="detail-grid context-grid"><article class="panel" id="crack"><div class="panel-head"><h3>지역별 제품–원유 가격차</h3><span class="meta">달러/배럴</span></div><div id="crack-history"></div><details class="method"><summary>3–2–1 계산기와 마진 해석</summary><p>정유사의 마진에는 실제 원료 배합, 수율, 운임, 연료·수소 비용과 재고평가가 반영된다. <a class="ref" href="#s-crack">[EIA]</a></p><form class="calculator" id="calc"><fieldset><legend>3–2–1 크랙 계산 · 가상 가격</legend><div class="inputs"><label>원유 <small>$/배럴</small><input id="c" type="number" min="0" max="1000" step="any" value="80" required></label><label>휘발유 <small>$/배럴</small><input id="g" type="number" min="0" max="1000" step="any" value="100" required></label><label>경유 <small>$/배럴</small><input id="d" type="number" min="0" max="1000" step="any" value="110" required></label></div><div class="calc-result"><span>(휘발유 × 2 + 경유 − 원유 × 3) ÷ 3</span><output id="spread" for="c g d" aria-live="polite"></output></div></fieldset></form></details></article><article class="panel"><div class="panel-head"><h3>세계 정유·경유 공급</h3><span class="meta">2025 / 2026</span></div><div id="oil-throughput"></div></article></div></section>
+<section class="section" id="us-winter-buffer"><div class="section-head"><h2>미국 중간유분 재고와 겨울 공급</h2><span class="meta">10월 30일 종료 주간 · 11월 4일 발표</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>주간 미국 석유 재고 변화</h3><span class="meta">백만 배럴</span></div><div id="weekly-stock-moves"></div></article>
+<article class="panel"><div class="panel-head"><h3>동부 계절 재고·난방유 대여</h3><span class="meta">전국과 지역 범위 구분</span></div><div id="winter-distillate"></div></article></div></section>
+<section class="section" id="diesel-exports-asia"><div class="section-head"><h2>아시아의 디젤 수출과 재고 제약</h2><span class="meta">중국·한국 · 11월 5일 확인</span></div><div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>중국 월간 경유 수출</h3></div><div id="china-diesel-liftings"></div></article>
+<article class="panel"><div class="panel-head"><h3>한국 수출 허용량과 실제 선적</h3></div><div id="korea-diesel-quota"></div></article>
+</div></section>
+<section class="section" id="product-stocks"><div class="section-head"><h2>석유제품 재고와 수급</h2></div><article class="panel"><div id="product-stock-comparison"></div></article><article class="panel context-grid"><div class="panel-head"><h3>미국 중간유분 재고 일수</h3><span class="meta">2026년 주간 · 과거 5년 범위</span></div><div id="distillate-season"></div><div id="distillate-cover" class="table-scroll"></div></article>
+<div class="panel context-grid"><div class="panel-head"><h3>정유 감산과 디젤 크랙</h3><span class="meta">국제에너지기구(IEA) · 10월 보고서</span></div><div id="run-flow"></div><details class="method"><summary>IEA 10월 수급 수치·전망</summary><div id="iea-context" class="table-scroll"></div></details></div></section>
+<section class="section" id="fuel-specs"><div class="section-head"><h2>휘발유 옥탄가와 동절기 디젤</h2><span class="meta">제품별 규격과 설비 차질</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>MTBE와 휘발유 배합</h3><span class="meta">공정과 생산 병목</span></div><div id="gasoline-blend"></div></article>
+<article class="panel"><div class="panel-head"><h3>내한성 디젤과 러시아 정유 투입</h3><span class="meta">실측·추정 구분</span></div><div id="winter-diesel"></div></article></div></section>
+<section class="section" id="brazil-sugar-mix">
+<div class="section-head"><h2>브라질 설탕 배분율과 휘발유 수요</h2><span class="meta">중남부 2026/27 작기 · 11월 6일 확인</span></div>
+<div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>사탕수수 당도와 설탕 생산 배분</h3></div><div id="brazil-sugar-data"></div></article>
+<article class="panel"><div class="panel-head"><h3>설탕 배분·에탄올·휘발유 수요 전달 단계</h3></div><div id="brazil-fuel-switch"></div></article>
+</div>
+<article class="panel context-grid"><div class="panel-head"><h3>다음 발표에서 확인할 지표</h3></div><div id="brazil-mix-watch"></div></article>
+</section>
+<section class="section" id="refinery-compare">
+<div class="section-head"><h2>지역별 정유 마진과 실제 가동</h2><span class="meta">원료·기간·집계 범위별 비교</span></div>
+<div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>WTI MEH 지역별 모형 정제 마진</h3><span class="meta">2026년 · 달러/배럴</span></div><div id="regional-margins" class="table-scroll"></div></article>
+<article class="panel"><div class="panel-head"><h3>원유 운임과 수출 채산성</h3><span class="meta">2026년 · 미국 걸프 출발</span></div><div id="regional-freight" class="table-scroll"></div></article>
+</div>
+<div class="panel context-grid"><div class="panel-head"><h3>실제 원유 투입과 경유 공급</h3><span class="meta">분기 전분기비 · 수출 전년비</span></div><div id="regional-runs" class="table-scroll"></div><div id="diesel-exports" class="table-scroll"></div></div>
+</section>
+<section class="section" id="refinery-run-model">
+<div class="section-head"><h2>도착 원유비 기준 정유 채산 계산</h2><span class="meta">관측 운임 + 공통 제품 바스켓 가정</span></div>
+<article class="panel">
+<form id="refinery-run-form" class="inputs compare-inputs">
+<label for="refinery-model-month">가격·운임 기준 월<select id="refinery-model-month"><option value="sep">2026년 9월</option><option value="aug">2026년 8월</option></select></label>
+<label for="refinery-model-basis">원유 품질·선적 차등<small>달러/원유 배럴</small><input id="refinery-model-basis" type="number" min="-100" max="100" step="0.1" value="0" required></label>
+<label for="refinery-model-risk">해상 보험·기타 추가비<small>달러/수입 원유 배럴</small><input id="refinery-model-risk" type="number" min="0" max="100" step="0.1" value="2" required></label>
+<label for="refinery-model-opex">연료·수소 등 변동비<small>달러/원유 배럴</small><input id="refinery-model-opex" type="number" min="0" max="150" step="0.1" value="15" required></label>
+</form>
+<div id="refinery-run-model-data" aria-live="polite"></div></article>
+</section>
+<section id="refineries" class="section">
+<div class="section-head"><h2>정유 크랙과 주요 정유시설</h2><span class="meta">제품 수익 · 도착 원유비 · 처리능력</span></div>
+<div class="detail-grid"><article class="panel"><div class="panel-head"><h3>미국 걸프연안 3–2–1 크랙 · WTI 기준</h3><span class="meta">달러/배럴</span></div><div id="refining-margins" class="table-scroll"></div>
+<p class="note">휘발유 2배럴과 디젤 1배럴의 가격을 합산해 3으로 나눈 뒤, 원유 1배럴 가격을 뺀다. <a class="ref" href="#s-crack">[산식]</a> <a class="ref" href="#s-usg">[휘발유]</a> <a class="ref" href="#s-usd">[디젤]</a> <a class="ref" href="#s-wti">[WTI]</a></p>
+<form class="freight-adjust" id="freight-adjust"><label for="delivered-premium">원유 도착 추가비 가정 <small>운임·보험 등 · 달러/원유 배럴</small></label><input id="delivered-premium" type="number" min="0" max="300" step="0.01" value="0" required><div><span>2026년 10월 크랙에서 추가비 차감</span><output id="adjusted-crack" for="delivered-premium" aria-live="polite"></output></div><p class="note">추가비만 넣은 계산이다. 원유 품질 차등, 제품 수율, 수소·연료비, 고정비는 넣지 않았다.</p></form></article>
+<article class="panel"><div class="panel-head"><h3>공정과 제품 수율</h3><a class="ref" href="#s-refining">[EIA]</a></div><div id="refinery-process" class="table-scroll"></div></article></div>
+<div class="panel refinery-assets"><div class="panel-head"><h3>주요 정유시설</h3><span class="meta">시설명을 누르면 지도 이동</span></div><div id="refinery-table" class="table-scroll"></div><div id="russia-repairs"></div><div id="refining-capacity-history"></div>
+<p class="note">가동일 능력은 연속 가동 조건이고, 달력일 능력은 정비·정지 시간을 반영한다. 러시아 전체 2026년 6월 실제 투입은 380만 배럴/일로 전년 동월보다 약 30% 줄었다. <a class="ref" href="#s-refcap">[처리능력]</a> <a class="ref" href="#s-russia">[실제 투입]</a></p>
+<div class="transmission-links"><a href="#refinery-roster">정유시설 명부: 권역별 시설·운영사·설비능력 지도와 표 ↗</a></div></div>
+</section>
+<article class="panel context-grid" id="refinery-damage"><div class="panel-head"><h3>러시아 정유시설의 처리능력·피해·재가동</h3><span class="meta">시설별 확인 수준 · 처리 손실은 별도</span></div><div id="refinery-damage-data"></div></article>
+<section class="section" id="refinery-roster"><div class="section-head"><h2>정유시설 명부</h2><span class="meta">가장 늦은 확인일 <time datetime="2026-11-07">2026.11.07</time> · 능력 기준일은 행마다 다름</span></div>
+<p class="note">권역별 정유시설의 운영사·설비능력·물류권을 원자료의 단위와 기준일 그대로 적었고, 단위나 기준일이 다른 능력은 더하거나 환산하지 않았다.</p>
+<p class="note rr-near"><a href="#refinery-table">주요 정유시설 ↗</a> 표의 9곳은 공정과 공급 노출을 적은 것으로, 출처와 기준이 달라 같은 시설의 능력이 이 명부와 다를 수 있다.</p>
+<div class="rc-controls rr-summary"><div class="pills" id="refinery-roster-region" role="group" aria-label="권역별 행 수와 거르기"></div><span id="refinery-roster-count" class="meta" aria-live="polite"></span></div>
+<div class="rr-figures" id="refinery-roster-figures">
+<article class="panel rc-fig rr-fig-map"><div class="panel-head"><h3>위치와 능력</h3><span class="meta">색은 권역 · 크기는 능력</span></div>
+<div class="rr-map" id="refinery-roster-map"></div>
+<p class="note"><span id="refinery-roster-nowhere"></span>위치는 시설 소재지 기준 개략 표시</p></article>
+<article class="panel rc-fig rr-fig-rank"><div class="panel-head"><h3>단위별 능력</h3><span class="meta" id="refinery-roster-scope"></span></div>
+<div id="refinery-roster-rank"></div></article>
+<div class="rc-card rr-card" id="refinery-roster-card" role="group" aria-label="고른 시설" hidden></div>
+</div>
+<div id="refinery-roster-data"></div>
+<details class="method rr-sources"><summary>표별 기준·단위 읽는 법·원자료</summary><div id="refinery-roster-sources"></div></details></section>
+<section class="section rf-section" id="ref-refining-capacity"><div class="section-head"><h2>정유능력의 분포: 지역·국가·미국 공정</h2><span class="meta">OPEC ASB 2025·2026 · EIA <time datetime="2026-01-01">2026.01.01</time></span></div>
+<p class="note rf-lede">명목능력(b/d), 가용 능력(b/cd), 공정별 능력(b/sd)은 정의와 기준 연도가 달라 그림마다 축을 따로 둔다.</p>
+<div class="rf-panels" id="ref-refining-capacity-panels"></div></section>
+<section class="section rf-section" id="ref-refining-plants"><div class="section-head"><h2>단지·회사의 장치별 능력: 울산 CLX·Marathon</h2><span class="meta">2025년 사업보고서 · 10-K <time datetime="2025-12-31">2025.12.31</time></span></div>
+<p class="note rf-lede">증류 뒤의 고도화·탈황 장치는 같은 원료를 다시 처리하므로 장치 능력을 서로 더하지 않는다.</p>
+<div class="rf-panels" id="ref-refining-plants-panels"></div></section>
+<section class="section" id="product-shipping"><div class="section-head"><h2>석유제품 운임</h2><span class="meta">발틱거래소 · 2025 / 2026년 44주차</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>경유·항공유 등 제품선</h3><span class="meta"></span></div><div id="product-freight" class="table-scroll"></div><details class="method"><summary>월드스케일과 일일 환산수익</summary><p>월드스케일(WS) 100은 해당 항로의 기준 톤당 운임이다. 기준은 매년 갱신된다. 왕복 일일 환산수익(TCE)은 항해 운임에서 연료와 항해비를 빼고 왕복 일수로 나눈다. 선박 고정비와 금융비 차감 전이다. <a class="ref" href="#s-wscale">[WS]</a> <a class="ref" href="#s-tce">[TCE]</a></p></details></article><article class="panel"><div class="panel-head"><h3>액화석유가스(LPG)선</h3><span class="meta"></span></div><div id="lpg-freight" class="table-scroll"></div></article></div></section>
+</div>
+<div class="desk" data-desk="supply" id="supply"><div class="desk-heading"><h2>제품별 수급</h2></div></div>
+<div class="desk" data-desk="gas" id="gas">
+<div class="desk-heading"><h2>천연가스·LNG</h2></div>
+<nav class="section-jump" aria-label="이 페이지의 항목"><a href="#gas-map">지도·가격·저장</a><a href="#lng-transmission">아시아 도착 물량·가격</a><a href="#lng-trade">LNG 교역</a><a href="#winter-gas">겨울 저장·러시아산 규정</a><a href="#lng-price-linkage">현물·계약가격</a><a href="#qatar-cheniere">카타르 장기계약</a><a href="#lng-deliveries">공급 중단·대체 물량</a><a href="#lng-shipping">LNG선 운임</a><a href="#lng-voyages">항해일·비용</a><a href="#lng-netback">목적지별 선적</a><a href="#gas-chain">밸류체인</a></nav>
+<section class="section commodity-overview" id="gas-market"><div class="overview-grid"><section id="gas-map" class="panel map-panel commodity-map" data-map="gas">
+<div class="panel-head"><h3>LNG 항로와 천연가스 배관</h3><div id="gas-map-tabs" class="pills" role="group" aria-label="LNG 항로와 천연가스 배관 지역"></div></div>
+<div class="map-detail" data-map-detail aria-live="polite"></div>
+<div class="map-canvas"><svg viewBox="0 0 760 290" role="group" aria-label="LNG 항로와 천연가스 배관"></svg><p data-map-message role="status">지도 불러오는 중</p></div>
+<div class="map-bottom"><div class="map-legend"><span><i class="lng"></i>LNG 항로</span><span><i class="gas"></i>가스 배관</span><span><i class="off"></i>중단·비가동</span></div><label for="gas-map-select" class="visually-hidden">LNG 항로·가스 배관·시설 선택</label><select id="gas-map-select" data-route-select><option>경로·시설</option></select></div>
+<p class="note map-volume-legend" data-map-volume-legend hidden>LNG 굵기 · 2025년 도착 백만 톤/년. 수치 없는 항로와 배관은 대표 선이다.</p>
+<details class="method"><summary>지도 기준</summary><p>경로를 선택하면 관측 물량이나 설비 기준을 볼 수 있다. 지도 선은 대표 경로이며, 선택한 경로를 강조한다. 기초 지리 Natural Earth · 시설 위치 NGA WPI 및 공개 자료.</p></details>
+</section><div class="commodity-data"><article class="panel"><div class="panel-head"><h3>유럽·미국 가스와 일본 LNG</h3><span class="meta">분기 평균 · 달러/MMBtu</span></div><div id="gas-quotes" class="table-scroll"></div></article><article class="panel"><div class="panel-head"><h3>EU 지하 가스 저장</h3><span class="meta">2025 / 2026</span></div><div id="gas-storage"></div></article></div></div></section>
+<section class="section transmission" id="lng-transmission">
+<div class="section-head"><h2>공급국별 LNG 도착 물량과 수입가</h2><span class="meta">아시아 6개 시장 · 2025년 8월 → 2026년 8월</span></div>
+<div class="transmission-grid lng-transmission-grid">
+<article class="panel"><div class="panel-head"><h3>공급국별 도착 물량</h3><span class="meta">백만 톤</span></div><div id="lng-context"></div></article>
+<article class="panel"><div class="panel-head"><h3>전체 수입량과 가중평균 수입가</h3></div><div id="lng-arrivals-bridge"></div></article>
+</div>
+</section>
+<section class="section" id="lng-trade"><div class="section-head"><h2>LNG 교역과 통과량</h2></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>걸프 선적 감소와 비걸프 공급</h3><span class="meta">2026년 3~10월 전년 동기 대비</span></div><div id="lng-global-bridge"></div></article><article class="panel"><div class="panel-head"><h3>호르무즈 LNG 통과량</h3><span class="meta"></span></div><div id="gas-flows"></div><p class="note context-caption"><a href="#gas-map" class="ref" data-region="gulf" data-site="qa-hormuz">라스라판 → 호르무즈 지도 ↗</a> · <a href="#gas-map" class="ref" data-region="russia" data-site="ukraine">러시아–유럽 가스관 ↗</a> · <a href="#gas-map" class="ref" data-region="pacific" data-site="ca-asia">캐나다 태평양 LNG ↗</a></p></article></div></section>
+<section class="section" id="winter-gas"><div class="section-head"><h2>유럽 겨울 가스 저장과 수입국 LNG 조달비</h2><span class="meta">2026/27년 동절기</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>유럽 저장과 러시아산 수입 규정</h3><span class="meta">가정과 법정 적용일</span></div><div id="eu-winter-scenario"></div></article>
+<article class="panel"><div class="panel-head"><h3>수입국의 LNG 조달비</h3><span class="meta">방글라데시 사례</span></div><div id="importer-lng-stress"></div></article></div></section>
+<section class="section" id="lng-price-linkage"><div class="section-head"><h2>LNG 현물과 원유 연동 계약의 가격 차이</h2><span class="meta">국제에너지기구(IEA) · 11월 3일 발표</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>아시아 LNG 현물과 유럽 가스 가격차</h3><span class="meta">달러/MMBtu</span></div><div id="lng-hub-gap"></div></article><article class="panel"><div class="panel-head"><h3>원유 연동 LNG 계약가의 반영 시차</h3><span class="meta"></span></div><div id="lng-contract-delay"></div></article></div></section>
+<section class="section" id="lng-deliveries"><div class="section-head"><h2>카타르 LNG 차질과 대체 공급의 시차</h2><span class="meta">10월 말 통지·기업 공시</span></div><div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>고객별 공급 중단과 겨울 저장</h3></div><div id="lng-cargo-disruptions"></div></article>
+<article class="panel"><div class="panel-head"><h3>미국 신규 공급과 북해·인도네시아 개발</h3></div><div id="lng-buildout"></div></article>
+</div></section>
+<section class="section" id="qatar-cheniere">
+<div class="section-head"><h2>카타르의 미국 LNG 장기 조달</h2><span class="meta">Cheniere 공시 · 2026.10.22</span></div>
+<div class="detail-grid"><article class="panel"><div class="panel-head"><h3>터미널별 연간 계약물량</h3><span class="meta">백만 톤/년</span></div><div id="qatar-spa-volume"></div></article>
+<article class="panel"><div class="panel-head"><h3>가격·인도·확장 조건</h3></div><div id="qatar-spa-terms" class="table-scroll"></div></article></div>
+</section>
+<section class="section" id="lng-shipping"><div class="section-head"><h2>LNG선 운임</h2><span class="meta">발틱거래소 · 2025 / 2026년 44주차</span></div><article class="panel"><div class="panel-head"><h3>주요 LNG선 용선 항로</h3><span class="meta"></span></div><div id="lng-freight" class="table-scroll"></div></article></section>
+<section class="section" id="lng-voyages"><div class="section-head"><h2>북미·카타르 LNG 항해일과 운송비</h2><span class="meta">아시아행 · 자료별 기준 표기</span></div>
+<div class="detail-grid"><article class="panel"><div class="panel-head"><h3>아시아까지 편도 항해</h3></div><div id="lng-days" class="table-scroll"></div></article>
+<article class="panel"><div class="panel-head"><h3>같은 용선료로 환산한 항해비</h3><span class="meta">왕복 용선료 모형</span></div><div id="lng-charter" class="table-scroll"></div></article></div></section>
+<article class="panel context-grid" id="lng-netback"><div class="panel-head"><h3>미국산 LNG의 유럽행·아시아행 선적</h3><span class="meta">2026년 9~10월 · 백만 톤</span></div><div id="lng-netback-data"></div></article>
+<section id="gas-chain" class="section">
+<div class="section-head"><h2>가스·LNG 공급망 단계</h2><span class="meta">공정 · 유량 · 최종 수요</span></div>
+<div class="panel flow-panel">
+<div id="gas-chain-steps" class="chain-steps" role="group" aria-label="밸류체인 단계"></div><div id="gas-chain-detail" aria-live="polite"></div></div>
+</section>
+</div>
+<div class="desk" data-desk="power" id="power">
+<div class="desk-heading"><h2>석탄·전력</h2></div>
+<nav class="section-jump" aria-label="이 페이지의 항목"><a href="#coal-trade">연료탄 교역</a><a href="#whitehaven">화이트헤이븐</a><a href="#dispatch">발전비 비교</a><a href="#germany-power">독일 발전</a><a href="#power-policy">유럽 전력 정책</a><a href="#us-power-retail">미국 소매요금</a><a href="#datacenter-power">데이터센터 전력·설비</a><a href="#ai-power-demand">AI 사용량·전력 수요</a></nav>
+<section class="section" id="coal-trade"><div class="section-head"><h2>연료탄 공급과 발전 연료 전환</h2><span class="meta">IEA · 2026년 중간 전망</span></div>
+<div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>주요 수출국의 연료탄 교역</h3><span class="meta">백만 톤/년</span></div><div id="coal-export-shift"></div><div id="india-coal-buffer" class="context-grid"></div></article>
+<article class="panel map-panel commodity-map" id="coal-map" data-map="power">
+<div class="panel-head"><h3>아시아 연료탄 수송</h3><div id="coal-map-tabs" class="pills" role="group" aria-label="석탄 지도 지역"></div></div>
+<div class="map-detail" data-map-detail aria-live="polite"></div>
+<div class="map-canvas"><svg viewBox="0 0 760 290" role="group" aria-label="아시아 해상 연료탄 대표 경로"></svg><p data-map-message role="status">지도 불러오는 중</p></div>
+<div class="map-bottom"><div class="map-legend"><span><i class="coal"></i>대표 연료탄 항로</span></div><label class="visually-hidden" for="coal-map-select">석탄 항로·시설</label><select id="coal-map-select" data-route-select><option>경로·시설</option></select></div>
+</article>
+</div><article class="panel context-grid"><div class="panel-head"><h3>연료탄·갈탄·가스의 조달 경로</h3></div><div id="power-fuel-path" class="table-scroll"></div></article></section>
+<section class="section" id="whitehaven"><div class="section-head"><h2>화이트헤이븐의 석탄 판매와 인수대금</h2><span class="meta">2026년 9월 분기 · FY27 1분기</span></div>
+<div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>생산·판매와 분기 현금흐름</h3></div><div id="whitehaven-cash"></div></article>
+<article class="panel"><div class="panel-head"><h3>다우니·블랙워터 인수대금 지급 일정</h3></div><div id="whitehaven-bma"></div></article>
+</div></section>
+<section class="section" id="dispatch"><div class="section-head"><h2>가스·석탄 발전비 비교</h2><span class="meta">가상 계산 · 유로/MWh</span></div>
+<div class="panel"><form id="power-spread-form"><div class="inputs power-inputs">
+<label for="power-input">전력 도매가<small>유로/MWh 전력</small><input id="power-input" type="number" min="-500" max="3000" step="0.1" value="120" required></label>
+<label for="gas-input">가스 가격<small>유로/MWh 열량</small><input id="gas-input" type="number" min="0" max="1000" step="0.1" value="50" required></label>
+<label for="coal-input">석탄 가격<small>유로/MWh 열량</small><input id="coal-input" type="number" min="0" max="1000" step="0.1" value="18" required></label>
+<label for="carbon-input">탄소배출권<small>유로/CO₂ 톤</small><input id="carbon-input" type="number" min="0" max="1000" step="0.1" value="75" required></label>
+</div></form><div id="power-spread-result" aria-live="polite"></div>
+<details class="method"><summary>산식·가정</summary><p>가스 발전마진은 Clean Spark Spread, 석탄 발전마진은 Clean Dark Spread로 부른다. 연료비 = 열량 기준 연료가격 ÷ 효율. 탄소비 = 배출권 가격 × 발전량 기준 배출계수. 가스 효율 55%·0.37톤/MWh, 석탄 효율 40%·0.85톤/MWh로 둔 가상 비교다. 설비별 정비비·기동비·고정비는 넣지 않았다. 가격은 시세가 아닌 입력 예시다.</p></details></div></section>
+<section class="section" id="germany-power"><div class="section-head"><h2>독일의 풍력·가스발전과 전력가격</h2></div>
+<div class="detail-grid"><article class="panel"><div class="panel-head"><h3>발전·수요 변화</h3></div><div id="germany-generation"></div></article>
+<article class="panel"><div class="panel-head"><h3>전력 도매가와 갈탄 마진</h3></div><div id="germany-spreads"></div></article></div></section>
+<section class="section" id="power-policy"><div class="section-head"><h2>이탈리아 발전비 보상과 이베리아 사례</h2></div>
+<div class="detail-grid"><article class="panel"><div class="panel-head"><h3>이탈리아와 EU의 도매 전력가</h3><span class="meta">2025년 평균 · 유로/MWh</span></div><div id="italy-price-context"></div></article>
+<article class="panel"><div class="panel-head"><h3>보상 설계와 관측된 효과</h3></div><div id="eu-power-policy" class="table-scroll"></div></article></div></section>
+<section class="section" id="us-power-retail"><div class="section-head"><h2>미국 최종 전기요금</h2><span class="meta">8월 · 센트/kWh</span></div>
+<div class="panel" id="us-power-comparison"></div></section>
+<section class="section" id="datacenter-power"><div class="section-head"><h2>데이터센터 전력 접속·설비 인도</h2><span class="meta">미국 · 2025~2026년 공개 자료</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>계통 접속 대기와 가스 터빈 인도</h3><span class="meta">GW · 서로 다른 집계</span></div><div id="grid-queue"></div></article>
+<article class="panel"><div class="panel-head"><h3>데이터센터 가동 단계</h3><span class="meta">설비 일정·조달·자금 조달</span></div><div id="powered-shell"></div></article></div></section>
+<section class="section" id="ai-power-demand"><div class="section-head"><h2>벤처투자와 데이터센터 전력 수요</h2><span class="meta">Apollo · Ramp · 2026년 10월</span></div>
+<div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>벤처캐피털 투자 유치 기업 비율</h3><span class="meta">Ramp 표본 · %</span></div><div id="ai-vc-share"></div></article>
+<article class="panel"><div class="panel-head"><h3>AI 수요 둔화의 전력 수요 전달 경로</h3></div><div id="ai-load-risk"></div></article>
+</div></section>
+</div>
+<div class="desk" data-desk="copper" id="copper"><div class="desk-heading"><h2>구리</h2></div>
+<nav class="section-jump" aria-label="구리 분석 바로가기"><a href="#copper-map">교역 지도</a><a href="#copper-actual-trade">실제 수입량</a><a href="#copper-production">광산·정련 생산</a><a href="#copper-smelting">제련비</a><a href="#zambia-copper">잠비아 조달</a><a href="#copper-physical">현물·재고</a><a href="#copper-downstream">가공·최종 수요</a></nav>
+<section class="section commodity-overview" id="copper-overview">
+<div id="copper-chain-flow"></div>
+<div class="overview-grid chain-overview-grid">
+<article class="panel map-panel commodity-map" id="copper-map" data-map="copper">
+<div class="panel-head"><h3>중국 정광·전기동 수입</h3><div id="copper-map-tabs" class="pills" role="group" aria-label="구리 품목 선택"></div></div>
+<div class="map-detail" data-map-detail aria-live="polite"></div>
+<div class="map-canvas"><svg viewBox="0 0 760 290" role="group" aria-label="중국의 정광과 전기동 수입 연결"></svg><p data-map-message role="status">지도 불러오는 중</p></div>
+<div class="map-bottom"><span class="meta">2025년 · 선 굵기는 품목 내 수입량</span><label class="visually-hidden" for="copper-route">구리 교역 연결 선택</label><select id="copper-route" data-route-select><option>교역 연결</option></select></div>
+<p class="note">중국 수입 신고 상대국이다. 정광은 화물 중량으로 집계한다.</p></article>
+<article class="panel"><div class="panel-head"><h3>채굴과 정련 생산의 지역 차이</h3><span class="meta">USGS · 2025년 추정</span></div><div id="copper-geography"></div></article></div>
+<article class="panel context-grid"><div class="panel-head"><h3>지도에 표시한 중국 수입량</h3><span class="meta">2025년 · UN Comtrade</span></div><div id="copper-actual-trade"></div></article></section>
+<section class="section" id="copper-production"><div class="section-head"><h2>광산 생산·제련·정련</h2><span class="meta">2024년과 2025년 추정 비교</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>광산과 정련소 생산</h3><span class="meta">구리 함량 · 백만 톤</span></div><div id="copper-production-data" class="table-scroll"></div></article><article class="panel"><div class="panel-head"><h3>광석 유형별 전기동 생산 경로</h3></div><div id="copper-process-paths"></div></article></div></section>
+<section class="section" id="copper-smelting"><div class="section-head"><h2>구리 제련비·정련비(TC·RC)</h2><span class="meta">2026년 연간 계약 · 10월 현물·입찰</span></div>
+<div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>연간 벤치마크·현물 평가·개별 입찰</h3></div><div id="copper-market"></div></article>
+<article class="panel"><div class="panel-head"><h3>전기동 1톤으로 환산한 제련·정련비</h3><span class="meta">가정에 따른 산술</span></div><div id="copper-charge-example"></div></article>
+</div>
+<article class="panel context-grid"><div class="panel-head"><h3>제련소·광산 수익 요인</h3></div><div id="copper-margins"></div></article>
+</section>
+<section class="section" id="copper-physical">
+<div class="section-head"><h2>중국 전기동 조달과 미국 재고 집중</h2><span class="meta">2026년 10월 말~11월 초</span></div>
+<div class="detail-grid">
+<article class="panel"><div class="panel-head"><h3>양산항 수입 프리미엄</h3><span class="meta">SMM 기사 · 달러/톤</span></div><div id="copper-yangshan"></div></article>
+<article class="panel"><div class="panel-head"><h3>LME 현물과 3개월물 가격차</h3><span class="meta">달러/톤</span></div><div id="copper-lme-spread"></div></article>
+</div>
+<div class="detail-grid context-grid">
+<article class="panel"><div class="panel-head"><h3>거래소별 전기동 재고</h3><span class="meta">Cochilco 11월 5일자 · 톤</span></div><div id="copper-exchange-stocks"></div></article>
+<article class="panel"><div class="panel-head"><h3>중국 전기동 현물 수급 지표</h3></div><div id="copper-physical-balance"></div></article>
+</div>
+</section>
+<section class="section" id="zambia-copper"><div class="section-head"><h2>잠비아 정련소의 황산·디젤 비용과 생산</h2><span class="meta">주빌리 메탈스 · FY2026 4분기</span></div>
+<div class="panel" id="zambia-constraints"></div></section>
+<section class="section" id="copper-downstream"><div class="section-head"><h2>전기동 가공·최종 수요와 제품 가격</h2></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>정제 구리의 수급과 용도</h3></div><div id="copper-demand-data"></div></article><article class="panel"><div class="panel-head"><h3>구리 지표와 전선·케이블 출하가</h3><span class="meta">2026년 2→3분기</span></div><div id="copper-wire-prices"></div></article></div></section>
+</div>
+<div class="desk" data-desk="food" id="food"><div class="desk-heading"><h2>식량</h2></div>
+<nav class="section-jump" aria-label="식량 분석 바로가기"><a href="#food-map">교역 지도</a><a href="#food-actual-trade">실제 교역량</a><a href="#food-production">생산·수요·재고</a><a href="#food-inputs">농업 투입비</a><a href="#food-milling">밀 제분</a><a href="#food-oils">대두 착유·설탕</a><a href="#food-downstream">도매·소비 가격</a></nav>
+<section class="section commodity-overview" id="food-overview">
+<div id="food-chain-flow"></div>
+<div class="overview-grid chain-overview-grid">
+<article class="panel map-panel commodity-map" id="food-map" data-map="food">
+<div class="panel-head"><h3>밀·대두 교역</h3><div id="food-map-tabs" class="pills" role="group" aria-label="식량 품목 선택"></div></div>
+<div class="map-detail" data-map-detail aria-live="polite"></div>
+<div class="map-canvas"><svg viewBox="0 0 760 290" role="group" aria-label="밀과 대두의 국가 간 교역"></svg><p data-map-message role="status">지도 불러오는 중</p></div>
+<div class="map-bottom"><span class="meta">2024년 · 선 굵기는 품목 내 교역량</span><label class="visually-hidden" for="food-route">식량 교역 연결 선택</label><select id="food-route" data-route-select><option>교역 연결</option></select></div>
+<p class="note">신고국의 상대국을 연결한다. 점은 국가 대표 위치다.</p></article>
+<article class="panel"><div class="panel-head"><h3>세계 곡물 수급과 기말 재고</h3><span class="meta">FAO · 백만 톤</span></div><div id="food-cereal-data"></div></article></div>
+<article class="panel context-grid"><div class="panel-head"><h3>지도에 표시한 실제 교역량</h3><span class="meta">2024년 · UN Comtrade</span></div><div id="food-actual-trade"></div></article></section>
+<section class="section" id="food-production"><div class="section-head"><h2>세계 밀 생산·이용·재고</h2><span class="meta">USDA · 백만 톤</span></div><div id="food-wheat-balance" class="panel"></div></section>
+<section class="section" id="food-inputs"><div class="section-head"><h2>농업 투입비와 수송 제약</h2><span class="meta">농가 · 사일로 · 항만</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>비료 지표 가격</h3><span class="meta">2026년 2→3분기 · 달러/톤</span></div><div id="food-fertilizers"></div></article><article class="panel"><div class="panel-head"><h3>곡물 물류 단계와 해상 운임</h3></div><div id="food-logistics"></div></article></div></section>
+<section class="section" id="food-milling"><div class="section-head"><h2>밀 투입·밀가루·제분 부산물</h2></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>미국 제분 실적</h3><span class="meta">USDA · 분기 · 백만 톤</span></div><div id="food-milling-data"></div></article><article class="panel"><div class="panel-head"><h3>밀 100kg의 제분 수율</h3><span class="meta">표준 환산 예시</span></div><div id="food-milling-yield"></div></article></div></section>
+<section class="section" id="food-oils"><div class="section-head"><h2>대두박·식용유·바이오연료</h2></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>미국 대두 착유 실적</h3><span class="meta">USDA · 2026년 9월</span></div><div id="food-soy-crush"></div></article><article class="panel"><div class="panel-head"><h3>대두유 국내 용도</h3><span class="meta">USDA · 미국 판매연도</span></div><div id="food-soy-use"></div></article></div></section>
+<section class="section" id="food-downstream"><div class="section-head"><h2>원곡·밀가루·빵 가격</h2><span class="meta">2026년 2→3분기</span></div><article class="panel" id="food-retail-prices"></article></section>
+</div>
+<div class="desk" data-desk="prices" id="prices"><div class="desk-heading"><h2>산업비용</h2></div>
+<nav class="section-jump" aria-label="이 페이지의 항목"><a href="#diesel-cost">경유 도매·소매</a><a href="#industry-prices-section">산업용 에너지 가격</a><a href="#industry-transmission">지역별 비용</a><a href="#inflation-chain">소비재·무역</a><a href="#food-price-index">국제 식량 가격</a><a href="#copper-smelting">구리 제련비</a><a href="#copper-physical">구리 현물·재고</a><a href="#zambia-copper">잠비아 구리 생산</a></nav>
+<section class="section" id="diesel-cost"><div class="section-head"><h2>경유 현물가와 최종 판매가</h2><span class="meta">미국 걸프연안 · EU</span></div><div class="detail-grid"><article class="panel"><div class="panel-head"><h3>미국 걸프연안 경유</h3><span class="meta">2026년 월평균 · 달러/갤런</span></div><div id="us-diesel-price"></div></article><article class="panel"><div class="panel-head"><h3>EU 경유 판매가의 세전·세후 비교</h3><span class="meta">2026년 · 유로/리터</span></div><div id="eu-diesel-price"></div></article></div></section>
+<section id="industry-prices-section" class="section">
+<div class="section-head"><h2>도매 가격과 최종 구매가격</h2><span class="meta">실물 가격 · 산업별 비용</span></div>
+<div class="detail-grid">
+<article class="panel" id="fuel-prices"><div class="panel-head"><h3>원료·연료 도매 가격</h3><span class="meta">KEEI · 8월 평균</span></div><div id="benchmarks" class="table-scroll"></div></article>
+<article class="panel"><div class="panel-head"><h3>항공유·경유와 산업용 전기·가스</h3></div><div id="industry-prices"></div></article>
+<article class="panel"><div class="panel-head"><h3>업종별 원가 노출</h3></div><div id="sector-costs" class="table-scroll"></div><p class="note context-caption"><a class="ref" href="#products">석유제품·정유 ↗</a> · <a class="ref" href="#gas">천연가스·LNG ↗</a></p></article>
+</div>
+</section>
+<section class="section" id="industry-transmission">
+<div class="section-head"><h2>지역별 에너지 비용과 가격 전가</h2></div>
+<div class="detail-grid"><article class="panel"><div class="panel-head"><h3>중국 원재료와 소비재 생산자물가</h3><span class="meta">2026년 9월 전년 대비 · %</span></div><div id="china-cost-gap"></div></article>
+<article class="panel"><div class="panel-head"><h3>일본·호주·브라질의 수입 노출</h3></div><div id="industrial-exposure" class="table-scroll"></div></article></div>
+<article class="panel context-grid"><div class="panel-head"><h3>호주 5대 도시 디젤 도매·소매</h3><span class="meta">2026년 · 호주달러/리터</span></div><div id="australia-diesel"></div></article>
+</section>
+<section class="section" id="industry-metals"><div class="section-head"><h2>구리와 산업 원가</h2></div><div class="panel route-links"><a href="#copper-overview">구리 공급망과 교역 지도 ↗</a><a href="#copper-smelting">제련비와 생산 ↗</a><a href="#copper-physical">현물 프리미엄과 거래소 재고 ↗</a><a href="#copper-downstream">전선·케이블 가격과 최종 수요 ↗</a><a href="#zambia-copper">잠비아 디젤·황산 비용 ↗</a></div></section>
+</div>
+<div class="desk" data-desk="inflation" id="inflation"><div class="desk-heading"><h2>물가전이</h2></div>
+<nav class="section-jump" aria-label="물가전이 분석 바로가기"><a href="#food-price-index">국제 식량 가격</a><a href="#grain-quality-cost">밀 품질과 식품 원가</a><a href="#consumer-pass-through">기업 가격 전가</a><a href="#cpi-items">미국 CPI 품목</a><a href="#korea-exposure">수출·환율</a></nav>
+<section class="section" id="inflation-chain"><div class="section-head"><h2>전이 지표: 식량·소비재·수출·CPI</h2><span class="meta">국제 원자재 · 기업 공시 · 2026년 10월 무역</span></div>
+<div class="detail-grid"><article class="panel"><div class="panel-head"><h3>국제 식량 가격</h3><span class="meta">FAO · 2026년 9~10월</span></div><div id="food-price-index"></div></article>
+<article class="panel"><div class="panel-head"><h3>호주 밀 품질과 식품 원가</h3><span class="meta">11월 4~5일 · 수확기</span></div><div id="grain-quality-cost"></div></article></div>
+<div class="detail-grid context-grid"><article class="panel"><div class="panel-head"><h3>소비재 매출의 가격·판매량</h3><span class="meta">실적과 회사 원가 전망</span></div><div id="consumer-pass-through"></div></article>
+<article class="panel"><div class="panel-head"><h3>한국 수출과 에너지 수입 부담</h3><span class="meta">조건부 환율·반도체 경로</span></div><div id="korea-exposure"></div><div id="korea-imports" class="korea-imports"></div></article></div>
+<article class="panel context-grid" id="cpi-items"><div class="panel-head"><h3>미국 CPI 품목별 변화</h3><span class="meta" id="cpi-items-asof">계절조정 지수 · %</span></div><div class="as-split"><div id="cpi-items-data"></div><div><div class="pills" id="cpi-items-tabs" role="group" aria-label="13개월 전월비 품목"></div><div id="cpi-items-months"></div></div></div></article></section>
+<section class="section rf-section" id="ref-cpi-weights"><div class="section-head"><h2>CPI 가중치와 조건부 기여</h2><span class="meta">미국 2026년 9월 상대중요도 · BLS <time datetime="2026-11-10">2026.11.10</time> 발표</span></div>
+<p class="note rf-lede">가중치에 가격 변화율을 곱한 고정 계산이며 실제 충격의 효과나 전망과 다르다.</p>
+<div class="rf-panels" id="ref-cpi-weights-panels"></div></section>
+<section class="section rf-section" id="ref-policy-support"><div class="section-head"><h2>일본 전기·가스 지원: 2026년 7–9월</h2><span class="meta">2026년 5월 26일 사용 결정 · 8월 사용분 단가</span></div>
+<p class="note rf-lede">소매요금 지원이 끝나면 국제가격이 그대로여도 소비자 요금이 올라갈 수 있어 지원 단가와 적용기간을 확인한다.</p>
+<div class="rf-panels" id="ref-policy-support-panels"></div></section>
+<section class="section rf-section" id="ref-climate-grain"><div class="section-head"><h2>기후·곡물가격의 기준선</h2><span class="meta">EIA <time datetime="2026-11-10">2026.11.10</time> · USDA ERS <time datetime="2026-10-23">2026.10.23</time></span></div>
+<p class="note rf-lede">난방도일과 식품가격 전망은 충격 계산의 기준선이며 이미 전망에 들어간 효과를 다시 더하지 않는다.</p>
+<div class="rf-panels" id="ref-climate-grain-panels"></div></section>
+</div>
+<div class="desk" data-desk="companies" id="companies"><div class="desk-heading"><h2>밸류체인 기업</h2></div>
+<section class="section" id="records-disruptions"><div class="section-head"><h2>차질·복구 대장</h2><span class="meta">확인 기준 <time datetime="2026-11-10">2026.11.10</time></span></div>
+<p class="note">회사 공시·어닝콜과 공개 보도에서 확인한 시설·회사별 차질과 복구 상태다.</p>
+<div class="rc-controls rc-summary"><div class="pills" id="records-disruptions-status" role="group" aria-label="상태별 건수와 거르기"></div><span id="records-disruptions-count" class="meta" aria-live="polite"></span></div>
+<div class="rc-figures" id="records-disruptions-figures">
+<article class="panel rc-fig"><div class="panel-head"><h3>위치</h3><div class="pills" id="records-disruptions-region" role="group" aria-label="지도 권역"></div></div>
+<div class="rc-map" id="records-disruptions-map"></div>
+<p class="note"><span id="records-disruptions-nowhere"></span>위치는 시설 소재지 기준 개략 표시 · 숫자는 공급 단계, 숫자 없는 표식은 6단계 밖 · 고리는 가까운 기록 묶음과 건수</p></article>
+<article class="panel rc-fig"><div class="panel-head"><h3>자료가 나온 날</h3><span class="meta">최근 6주 확대 · 이전은 압축</span></div>
+<div id="records-disruptions-timeline"></div>
+<p class="note">실선 꼬리는 사건일까지 · 점선 꼬리는 날짜가 적히지 않은 앞선 사건</p></article>
+<div class="rc-card" id="records-disruptions-card" role="group" aria-label="고른 기록" hidden></div>
+</div>
+<div class="pills rc-flow" id="records-disruptions-stage" role="group" aria-label="공급 단계별 건수와 거르기"></div>
+<div id="records-disruptions-data"></div></section>
+<section class="section" id="records-contracts"><div class="section-head"><h2>계약·프로젝트 진행표</h2><span class="meta">확인 기준 <time datetime="2026-11-10">2026.11.10</time></span></div>
+<p class="note">공식 발표와 어닝콜에서 확인한 공급계약·MoU·투자결정·증설·수리 사업의 단계와 목표 시점이다.</p>
+<article class="panel rc-fig"><div class="panel-head"><h3>발표일과 목표 시점</h3><span class="meta">세로 눈금은 발표일 · 빗금은 목표 기간</span></div>
+<div id="records-contracts-gantt"></div></article>
+<div class="pills rc-key" id="records-contracts-phase" role="group" aria-label="사업 단계별 건수와 거르기"></div>
+<div class="rc-controls"><span class="note">발표문이 없는 행의 발표일은 어닝콜 날짜다.</span><span id="records-contracts-count" class="meta" aria-live="polite"></span></div>
+<div id="records-contracts-data"></div></section>
+<section class="section" id="peer-quarters"><div class="section-head"><h2>분기 비교</h2><span class="meta">확인 기준 <time datetime="2026-11-11">2026.11.11</time></span></div>
+<p class="note">기업 분기 발표와 콜에서 확인한 수치를 밸류체인 단계별로 비교하며, 단위와 묶음이 같은 수치만 한 차트에 놓고 집계 기준이 다른 차트에는 그 차이를 적었다.</p>
+<div class="pills pq-flow" id="peer-quarters-stage" role="group" aria-label="밸류체인 단계별 회사 수·관측 수와 거르기"></div>
+<div class="rc-controls pq-legend"><span class="pq-key" id="peer-quarters-key"></span><span id="peer-quarters-count" class="meta" aria-live="polite"></span></div>
+<div class="pq-panels" id="peer-quarters-panels"></div>
+<details class="method pq-sources"><summary>원자료 링크</summary><div class="pq-srcs" id="peer-quarters-sources"></div></details></section>
+<section class="section rf-section" id="ref-companies-fleet"><div class="section-head"><h2>기업 참조 자료: 선대와 배관 자산</h2><span class="meta">회계 2025년 연차보고서</span></div>
+<p class="note rf-lede">연차보고서가 적은 공시 기준일의 선대·자산 스냅샷이다.</p>
+<div class="rf-panels" id="ref-companies-fleet-panels"></div></section>
+<section class="section rf-section" id="ref-companies-refining"><div class="section-head"><h2>기업 참조 자료: 정유사의 사업 결합과 정유 이후 사업</h2><span class="meta">2025년 사업보고서 · 회계 2025년 연차공시 · Reliance 회계 2025–2026년</span></div>
+<p class="note rf-lede">정유소를 운영하는 회사와 상장 모회사, 정유와 함께 묶인 물류·화학·소매 사업을 회사별 공시 범위대로 적었다.</p>
+<div class="rf-panels" id="ref-companies-refining-panels"></div></section>
+<section class="section rf-section" id="ref-companies-filings"><div class="section-head"><h2>기업 참조 자료: 연차자료와 확인한 부분</h2><span class="meta">보고기간 말 · 선대 기준일</span></div>
+<p class="note rf-lede">해당 보고서가 설명하는 시점과 이후 분기 운영 상태를 구분한다.</p>
+<div class="rf-panels" id="ref-companies-filings-panels"></div></section>
+</div>
+<div class="desk" data-desk="monitor" id="monitor">
+<div class="desk-heading market-heading"><h2>시장 모니터</h2><p class="basis-line" id="monitor-basis"><span>조사 기준 <b><time datetime="2026-11-07">2026.11.07</time></b></span></p></div>
+<div class="monitor-top"><section class="panel shock-panel" id="monitor-shock"><div class="heat-head"><p class="kicker">공급 충격 · 물량·처리·보험</p><h2>걸프 수출·호르무즈 통과·러시아 정유 투입·전쟁보험료</h2></div></section></div>
+<div class="section-head market-history-heading"><h2>월평균 가격과 공급 사건</h2></div>
+<div class="monitor-grid monitor-history"><section id="timeline" class="panel market-chart">
+<div class="panel-head"><h2>원유·디젤·크랙 추이</h2><span class="meta">월평균 · 달러/배럴</span></div>
+<div class="chart-tools"><div class="pills" id="trend-tabs" role="group" aria-label="시계열 기간"></div><div class="trend-picker"><label for="trend-month">선택 월</label><select id="trend-month"></select></div></div>
+<svg id="trend" role="img" aria-label="브렌트와 WTI 원유, 미국 걸프연안 디젤 현물가 및 경유·휘발유 크랙 월별 추이"></svg>
+<div id="trend-legend" class="trend-legend" role="group" aria-label="선택 월 값과 강조할 시계열"></div><span class="visually-hidden" id="trend-values" aria-live="polite"></span>
+<details class="method"><summary>산식·원자료</summary><p>디젤 현물은 미국 걸프연안 초저유황 경유 월평균에 42갤런을 곱해 배럴당으로 환산했다. 미국 크랙은 이 제품 가격과 쿠싱 WTI(서부텍사스산 원유)의 차이다. <a class="ref" href="#s-brent">[브렌트]</a> <a class="ref" href="#s-wti">[WTI]</a> <a class="ref" href="#s-usd">[경유]</a> <a class="ref" href="#s-usg">[휘발유]</a></p></details>
+</section>
+<section class="panel events-panel" id="market-events"><div class="panel-head"><h2>공급 충격과 가격</h2><span class="meta" id="events-heading">사건 선택</span></div><div id="events-list" aria-labelledby="events-heading"></div><div id="event-note" class="event-note" aria-live="polite"></div><details class="method event-research"><summary>관련 분석</summary><div class="events-links"><a class="ref" href="#crude-transmission">걸프 유량·원유값 ↗</a><a class="ref" href="#diesel-transmission">디젤 크랙·판매가 ↗</a><a class="ref" href="#lng-transmission">아시아 LNG 도착가 ↗</a><a class="ref" href="#geopolitics">휴전·제재 ↗</a><a class="ref" href="#power">석탄·전력 ↗</a><a class="ref" href="#futures-physical">11월 유가·실물 ↗</a><a class="ref" href="#datacenter-power">AI 전력 병목 ↗</a></div></details></section></div>
+
+<section class="panel monitor-chips" id="monitor-chips" aria-label="데스크별 주요 수치">
+<div class="mc-row" id="monitor-chips-supply"><h3>공급·재고</h3><div class="live-strip"></div></div>
+<div class="mc-row" id="monitor-chips-price"><h3>가격</h3><div class="live-strip"><a class="live-chip mc-link" href="#brent-market"><span>원유 ↗</span><b>Dated Brent</b></a><a class="live-chip mc-link" href="#oil-market"><span>정유·석유화학 ↗</span><b>정유 크랙</b></a><a class="live-chip mc-link" href="#shipping"><span>원유 ↗</span><b>VLCC 운임</b></a><a class="live-chip mc-link" href="#lng-netback"><span>천연가스·LNG ↗</span><b>LNG 목적지별 선적</b></a></div></div>
+<div class="mc-row" id="monitor-chips-inflation"><h3>식품·구리·물가</h3><div class="live-strip"></div></div>
+</section>
+<div class="section-head"><h2>분기·월 비교</h2></div>
+<div class="monitor-compare"><section id="quotes" class="panel quote-panel">
+<div class="panel-head"><h2>분기 가격</h2><span class="meta">2026년 2분기 → 3분기</span></div>
+<div id="quarter-monitor"></div>
+<details class="method"><summary>월별 가격·전년 비교</summary><div class="table-scroll" id="quote-board"></div></details>
+<div class="watch-notes"><a href="#quarter-supply">정유 가동·재고 비교 ↗</a></div>
+</section>
+<article class="panel context-grid" id="quarter-supply"><div class="panel-head"><h3>분기별 가격·정유 가동·재고</h3><span class="meta">2026년 2분기 → 3분기</span></div><div id="quarter-supply-data"></div></article></div>
+<section id="map" class="panel map-panel monitor-map" data-map="overview">
+<div class="panel-head"><h2>공급 경로</h2><div id="map-tabs" class="pills" role="group" aria-label="지도 지역"></div></div>
+<div class="map-detail" aria-live="polite" id="map-detail" data-map-detail></div>
+<div class="map-canvas"><svg id="geo" viewBox="0 0 760 290" role="group" aria-label="선택한 지역의 에너지 공급망"></svg><p id="map-message" data-map-message role="status">지도 불러오는 중</p></div>
+<div class="map-bottom"><div class="map-legend"><span><i class="oil"></i>원유</span><span><i class="lng"></i>LNG</span><span><i class="gas"></i>가스관</span><span><i class="product"></i>석유제품</span><span><i class="off"></i>중단·비가동</span></div><label for="route-select" class="visually-hidden">경로·시설</label><select id="route-select" data-route-select><option>경로·시설</option></select></div>
+<p class="note map-volume-legend" data-map-volume-legend hidden>LNG 굵기 · 2025년 도착 백만 톤/년. 수치 없는 항로와 배관은 대표 선이다.</p>
+<details class="method"><summary>지도 기준</summary><p>선은 대표 연결이며 색은 품목과 상태를 나타낸다. 정량 LNG 항로는 2025년 도착 물량을 선 굵기로도 표시한다. 기초 지리 Natural Earth · 시설 위치 NGA WPI 및 공개 자료.</p></details>
+</section>
+</div>
+<section id="sources" class="section" data-desk="sources"><div class="desk-heading"><h2>출처</h2></div>
+
+<div class="sources-grid" id="source-list"></div></section>
+</main>
+<dialog id="research-search" aria-labelledby="research-search-title">
+<div class="search-head"><h2 id="research-search-title">자료 찾기</h2><form method="dialog"><button type="submit" aria-label="검색 닫기">닫기</button></form></div>
+<label for="research-query" class="visually-hidden">주제·시설·지표 검색</label>
+<input id="research-query" type="search" placeholder="Dated Brent, 정유 크랙, 야로슬라블, TD3C" autocomplete="off" autofocus>
+<p id="research-search-count" class="meta" aria-live="polite"></p>
+<ul id="research-search-results"></ul>
+<div class="search-foot"><a href="#source-list">출처 목록 ↗</a><span class="meta">Enter로 첫 결과 열기</span></div>
+</dialog>
+<footer><div class="wrap footer-inner"><strong>에너지 공급망 리서치</strong><span>조사 기준 2026년 11월 7일 · 지표별 관측일과 단위 표기</span><a href="#monitor">시장 모니터 ↑</a></div></footer>
+</body>
+</html>
