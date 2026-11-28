@@ -1,0 +1,54 @@
+/* 사건 연결 (event-chains.js): a chain's six 연결 단계 side by side, stacked
+   on a narrow screen, and the market and industry summary table; and the
+   연결 지표 line value-chain.js draws under a company card's metric table
+   (eventChains.company_links). Colours are variables of style.css and
+   live.css. A status is a colour and a line style, and its word is always
+   written next to it. */
+:root{--ec-measured:var(--blue-strong);--ec-estimated:var(--rc-t3);--ec-derived:var(--rc-plan);--ec-unknown:var(--rc-unknown)}
+.ec-records{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 10px;padding:0;list-style:none}
+.ec-records li{display:grid;gap:1px;padding:5px 9px;border:1px solid var(--line);border-radius:4px;background:var(--paper);font-size:12px;line-height:1.35}
+.ec-records a{font-weight:650}
+.ec-records span{color:var(--muted);font-size:11px}
+.ec-steps{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:0 0 10px;padding:0;list-style:none}
+.ec-step{min-width:0;padding:8px 9px 4px;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
+.ec-step-head{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:2px 7px;padding-bottom:6px;border-bottom:1px solid var(--edge)}
+.ec-step-head h3{margin:0;font-size:12.5px;line-height:1.35;letter-spacing:-.02em}
+.ec-num{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--blue-strong);color:var(--paper);font:700 10.5px var(--numeric)}
+.ec-counts{grid-column:1/-1;margin:0;color:var(--muted);font-size:10.5px}
+.ec-links{margin:0;padding:0;list-style:none}
+.ec-link{margin:6px 0;padding:2px 0 4px 8px;border-left:3px solid var(--ec-measured);font-size:11.5px;line-height:1.45}
+.ec-link[data-status=estimated]{border-left-color:var(--ec-estimated)}
+.ec-link[data-status=derived]{border-left-color:var(--ec-derived);border-left-style:double}
+.ec-link[data-status=unknown]{border-left:3px dashed var(--ec-unknown)}
+.ec-link p{margin:0 0 2px}
+.ec-what b{font-weight:680}
+.ec-value{font-size:12.5px;font-weight:700;line-height:1.35;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.ec-tags{display:flex;flex-wrap:wrap;align-items:center;gap:3px 4px}
+.ec-badge,.ec-chip{display:inline-block;padding:0 4px;border:1px solid var(--edge);border-radius:2px;background:var(--paper);color:var(--ink);font-size:10px;line-height:1.5;white-space:nowrap}
+.ec-badge{font-weight:700;color:var(--paper);border-color:transparent;background:var(--ec-measured)}
+.ec-badge[data-status=estimated]{background:var(--ec-estimated)}
+.ec-badge[data-status=derived]{background:var(--ec-derived)}
+.ec-badge[data-status=unknown]{background:var(--paper);color:var(--ink);border:1px dashed var(--ec-unknown)}
+.ec-mixed{background:#fff6e5;border-color:#e8cf9a}
+.ec-period{color:var(--muted);font:10.5px var(--numeric)}
+.ec-basis{color:var(--ink)}
+.ec-missing{color:var(--muted)}
+.ec-missing b,.ec-ind .live-badge{margin-right:3px}
+.ec-missing b{color:var(--ink);font-size:10.5px}
+.ec-ind,.ec-ref{color:var(--muted);font-size:10.5px}
+.ec-ind small,.ec-summary-table small{color:var(--muted)}
+.ec-summary-table thead th,.ec-summary-table td{text-align:left}
+.ec-summary-table td.ec-text{font:12px/1.4 AtlasKR,"Noto Sans KR","Malgun Gothic",system-ui,sans-serif;white-space:normal;text-align:left;min-width:120px}
+.ec-summary-table td.ec-text b{font-family:var(--numeric)}
+.ec-summary-table td.ec-text .ec-badge{margin-top:2px}
+.ec-change{white-space:nowrap}
+.vc-link{margin:6px 0 8px;padding:3px 0 3px 8px;border-left:3px solid var(--ec-measured);font-size:11.5px;line-height:1.5}
+.vc-link[data-status=estimated]{border-left-color:var(--ec-estimated)}
+.vc-link[data-status=unknown]{border-left:3px dashed var(--ec-unknown)}
+.vc-link strong{margin-right:3px}
+.vc-link b{font-family:var(--numeric);font-weight:700}
+.vc-link em{font-style:normal;font-weight:650}
+.vc-link small{display:block;margin-top:2px;color:var(--muted);font-size:10.5px}
+.vc-rel{display:inline-block;margin-right:3px;padding:0 4px;border:1px solid var(--edge);border-radius:2px;background:var(--paper);font-size:10px;line-height:1.5;white-space:nowrap}
+@media (max-width:1100px){.ec-steps{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:720px){.ec-steps{grid-template-columns:minmax(0,1fr)}.ec-summary-table{min-width:760px}}
